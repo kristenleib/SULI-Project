@@ -302,274 +302,6 @@ void final_lpair_signal_v2(){
     // Lambda Bar - Lambda Bar pairs. This results in 6 distributions that are subsquently used to extract the signal: US Lambda - US Lambda, US Lambda - LS Lambda, US Lambda - US Lambda Bar,
     // US Lambda - LS Lambda Bar, Ls Lambda - US Lambda, US Lambda Bar - US Lambda Bar, and US Lambda Bar - LS Lambda Bar.
 
-    // Main for loop that Fills the Vector Pairs
-    int q = 0;
-    int b = 0;
-
-    const int nEntries = ntp_Lambda->GetEntries();
-    for (int i = 0; i < nEntries; ++i){
-        ntp_Lambda->GetEntry(i);
-
-        // Skip pairing if p1_InEventID equals p2_InEventID
-        if (p1_InEventID == p2_InEventID)
-            continue;
-
-        // Fill TLorentzVector with current event particles
-        TLorentzVector p1, p2;
-        p1.SetPtEtaPhiM(p1_pt, p1_eta, p1_phi, mass_p1);
-        p2.SetPtEtaPhiM(p2_pt, p2_eta, p2_phi, mass_p2);
-
-        TLorentzVector fourmomentum = p1 + p2;
-
-        // Pair charge check
-        if (pair_charge == 0) {
-            // Un-like sign pairs
-            if (p1_ch > 0) {
-                // Lambda pair
-                lambda_us.push_back(fourmomentum);
-                proton_us.push_back(p1);
-                proton_id_lambda_us.push_back(p1_InEventID);
-                pion_id_lambda_us.push_back(p2_InEventID);
-
-            } else if (p1_ch < 0) {
-                // Lambda Bar pair
-                lambda_bar_us.push_back(fourmomentum);
-                anti_proton_us.push_back(p1);
-                anti_proton_id_lambda_bar_us.push_back(p1_InEventID);
-                anti_pion_id_lambda_bar_us.push_back(p2_InEventID);
-            }
-        } else {
-            // Like-sign pairs
-            if (p1_ch > 0) {
-                // Lambda pair
-                lambda_ls.push_back(fourmomentum);
-                proton_ls.push_back(p1);
-                proton_id_lambda_ls.push_back(p1_InEventID);
-                pion_id_lambda_ls.push_back(p2_InEventID);
-
-            } else if (p1_ch < 0) {
-                // Lambda-bar pair
-                lambda_bar_ls.push_back(fourmomentum);
-                anti_proton_ls.push_back(p1);
-                anti_proton_id_lambda_bar_ls.push_back(p1_InEventID);
-                anti_pion_id_lambda_bar_ls.push_back(p2_InEventID);
-            }
-        }
-
-        // Pairing the Lambdas and Lambda Bars
-        if (eventId != prevEventID && prevEventID != -1){
-            for (size_t j = 0; j < lambda_us.size(); ++j) {
-                for (size_t k = j + 1; k < lambda_us.size(); ++k) {
-                    if (proton_id_lambda_us[j] == proton_id_lambda_us[k] || pion_id_lambda_us[j] == pion_id_lambda_us[k])
-                        continue;
-
-                    h2_lambda_us_lambda_us->Fill(lambda_us[j].M(), lambda_us[k].M());
-                    fourmoment_lambda_us_1.push_back(lambda_us[j]);
-                    fourmoment_lambda_us_2.push_back(lambda_us[k]);
-                    fourmoment_proton_us_1.push_back(proton_us[j]);
-                    fourmoment_proton_us_2.push_back(proton_us[k]);
-                }
-
-                for (size_t k = 0; k < lambda_ls.size(); ++k) {
-                    if (proton_id_lambda_us[j] == proton_id_lambda_ls[k] || pion_id_lambda_us[j] == pion_id_lambda_ls[k])
-                        continue;
-
-                    if (q % 2 == 0){
-                        h2_lambda_us_lambda_ls->Fill(lambda_us[j].M(), lambda_ls[k].M());
-                    } else {
-                        h2_lambda_us_lambda_ls->Fill(lambda_ls[k].M(), lambda_us[j].M());
-                    }
-
-                    fourmoment_lambda_us3.push_back(lambda_us[j]);
-                    fourmoment_lambda_ls3.push_back(lambda_ls[k]);
-                    fourmoment_proton_us3.push_back(proton_us[j]);
-                    fourmoment_proton_ls3.push_back(proton_ls[k]);
-
-                    q++; // increase the value by 1
-                }
-            }
-
-            for (size_t j = 0; j < lambda_us.size(); ++j) {
-                for (size_t k = 0; k < lambda_bar_us.size(); ++k) {
-                    if (proton_id_lambda_us[j] == anti_proton_id_lambda_bar_us[k] || pion_id_lambda_us[j] == anti_pion_id_lambda_bar_us[k])
-                        continue;
-
-                    h2_lambda_us_lambda_bar_us->Fill(lambda_us[j].M(), lambda_bar_us[k].M());
-
-                    fourmoment_lambda_us4.push_back(lambda_us[j]);
-                    fourmoment_lambda_bar_us4.push_back(lambda_bar_us[k]);
-                    fourmoment_proton_us4.push_back(proton_us[j]);
-                    fourmoment_anti_proton_us4.push_back(anti_proton_us[k]);
-                }
-
-                for (size_t k = 0; k < lambda_bar_ls.size(); ++k){
-                    if (proton_id_lambda_us[j] == anti_proton_id_lambda_bar_ls[k] || pion_id_lambda_us[j] == anti_pion_id_lambda_bar_ls[k])
-                        continue;
-
-                    h2_lambda_us_lambda_bar_ls->Fill(lambda_us[j].M(), lambda_bar_ls[k].M());
-
-                    fourmoment_lambda_us5.push_back(lambda_us[j]);
-                    fourmoment_lambda_bar_ls5.push_back(lambda_bar_ls[k]);
-                    fourmoment_proton_us5.push_back(proton_us[j]);
-                    fourmoment_anti_proton_ls5.push_back(anti_proton_ls[k]);
-                }
-            }
-
-            for (size_t j = 0; j < lambda_ls.size(); ++j){
-                for (size_t k = 0; k < lambda_bar_us.size(); ++k){
-                    if (proton_id_lambda_ls[j] == anti_proton_id_lambda_bar_us[k] || pion_id_lambda_ls[j] == anti_pion_id_lambda_bar_us[k])
-                        continue;
-
-                    h2_lambda_us_lambda_bar_ls->Fill(lambda_ls[j].M(), lambda_bar_us[k].M());
-
-                    fourmoment_lambda_ls6.push_back(lambda_ls[j]);
-                    fourmoment_lambda_bar_us6.push_back(lambda_bar_us[k]);
-                    fourmoment_proton_ls6.push_back(proton_ls[j]);
-                    fourmoment_anti_proton_us6.push_back(anti_proton_us[k]);
-                }
-            }
-
-            for (size_t j = 0; j < lambda_bar_us.size(); ++j) {
-                for (size_t k = j + 1; k < lambda_bar_us.size(); ++k) {
-                    if (anti_proton_id_lambda_bar_us[j] == anti_proton_id_lambda_bar_us[k] || anti_pion_id_lambda_bar_us[j] == anti_pion_id_lambda_bar_us[k])
-                        continue;
-
-                    h2_lambda_bar_us_lambda_bar_us->Fill(lambda_bar_us[j].M(), lambda_bar_us[k].M());
-                    fourmoment_lambda_bar_us_1.push_back(lambda_bar_us[j]);
-                    fourmoment_lambda_bar_us_2.push_back(lambda_bar_us[k]);
-                    fourmoment_anti_proton_us_1.push_back(anti_proton_us[j]);
-                    fourmoment_anti_proton_us_2.push_back(anti_proton_us[k]);
-                }
-
-                for (size_t k = 0; k < lambda_ls.size(); ++k){
-                    if (anti_proton_id_lambda_bar_us[j] == anti_proton_id_lambda_bar_ls[k] || anti_pion_id_lambda_bar_us[j] == anti_pion_id_lambda_bar_ls[k])
-                        continue;
-
-                    if (b % 2 == 0){
-                        h2_lambda_bar_us_lambda_bar_ls->Fill(lambda_bar_us[j].M(), lambda_bar_ls[k].M());
-                    } else {
-                        h2_lambda_bar_us_lambda_bar_ls->Fill(lambda_bar_ls[k].M(), lambda_bar_us[j].M());
-                    }
-
-                    fourmoment_lambda_bar_us7.push_back(lambda_bar_us[j]);
-                    fourmoment_lambda_bar_ls7.push_back(lambda_bar_ls[k]);
-                    fourmoment_anti_proton_us7.push_back(anti_proton_us[j]);
-                    fourmoment_anti_proton_ls7.push_back(anti_proton_ls[k]);
-
-                    b++; // increase the value by 1
-                }
-            }
-
-            // Pull out the single US Lambdas and US Lambda Bars
-            int vector_size = 1e5;
-
-            if (lambda_us.size() == 1 && lambda_bar_us.size() == 0 && single_lambda_us.size() < vector_size){
-                single_lambda_us.push_back(lambda_us[0]);
-                single_proton_us.push_back(proton_us[0]);
-            } else if (lambda_us.size() == 0 && lambda_bar_us.size() == 1 && single_lambda_bar_us.size() < vector_size) {
-                single_lambda_bar_us.push_back(lambda_bar_us[0]);
-                single_anti_proton_us.push_back(anti_proton_us[0]);
-            }
-
-            if (lambda_ls.size() == 1 && lambda_bar_ls.size() == 0 && single_lambda_ls.size() < vector_size){
-                single_lambda_ls.push_back(lambda_ls[0]);
-                single_proton_ls.push_back(proton_ls[0]);
-            } else if (lambda_ls.size() == 0 && lambda_bar_ls.size() == 1 && single_lambda_bar_ls.size() < vector_size) {
-                single_lambda_bar_ls.push_back(lambda_bar_ls[0]);
-                single_anti_proton_ls.push_back(anti_proton_ls[0]);
-            }
-
-            // Same Event Pairs
-            // "!=" is the c++ equivalent of "≠"
-            // Lambda - Lambda Pairs
-            if (lambda_us.size() > 1 && same_event_lambda_us_1.size() < vector_size) {
-                if (proton_id_lambda_us[0] != proton_id_lambda_us[1] || pion_id_lambda_us[0] != pion_id_lambda_us[1]) {
-                    same_event_lambda_us_1.push_back(lambda_us[0]);
-                    same_event_lambda_us_2.push_back(lambda_us[1]);
-                    same_event_proton_us_1.push_back(proton_us[0]);
-                    same_event_proton_us_2.push_back(proton_us[1]);
-                }
-            }
-
-            if (lambda_us.size() > 0 && lambda_ls.size() > 0 && same_event_lambda_us_3.size() < vector_size) {
-                if (proton_id_lambda_us[0] != proton_id_lambda_ls[0] || pion_id_lambda_us[0] != pion_id_lambda_ls[0]) {
-                    same_event_lambda_us_3.push_back(lambda_us[0]);
-                    same_event_lambda_ls_3.push_back(lambda_ls[0]);
-                    same_event_proton_us_3.push_back(proton_us[0]);
-                    same_event_proton_ls_3.push_back(proton_ls[0]);
-                }
-            }
-
-            // Lambda Bar - Lambda Bar Pairs
-            if (lambda_us.size() > 0 && lambda_bar_us.size() > 0 && same_event_lambda_us_4.size() < vector_size) {
-                if (proton_id_lambda_us[0] != anti_proton_id_lambda_bar_us[0] || pion_id_lambda_us[0] != anti_pion_id_lambda_bar_us[0]) {
-                    same_event_lambda_us_4.push_back(lambda_us[0]);
-                    same_event_lambda_bar_us_4.push_back(lambda_bar_us[0]);
-                    same_event_proton_us_4.push_back(proton_us[0]);
-                    same_event_anti_proton_us_4.push_back(anti_proton_us[0]);
-                }
-            }
-
-            if (lambda_us.size() > 0 && lambda_bar_ls.size() > 0 && same_event_lambda_us_5.size() < vector_size) {
-                if (proton_id_lambda_us[0] != anti_proton_id_lambda_bar_ls[0] || pion_id_lambda_us[0] != anti_pion_id_lambda_bar_ls[0]) {
-                    same_event_lambda_us_5.push_back(lambda_us[0]);
-                    same_event_lambda_bar_ls_5.push_back(lambda_bar_ls[0]);
-                    same_event_proton_us_5.push_back(proton_us[0]);
-                    same_event_anti_proton_ls_5.push_back(anti_proton_ls[0]);
-                }
-            }
-
-            if (lambda_ls.size() > 0 && lambda_bar_us.size() > 0 && same_event_lambda_ls_5.size() < vector_size) {
-                if (proton_id_lambda_ls[0] != anti_proton_id_lambda_bar_us[0] || pion_id_lambda_ls[0] != anti_pion_id_lambda_bar_us[0]) {
-                    same_event_lambda_ls_5.push_back(lambda_ls[0]);
-                    same_event_lambda_bar_us_5.push_back(lambda_bar_us[0]);
-                    same_event_proton_ls_5.push_back(proton_ls[0]);
-                    same_event_anti_proton_us_5.push_back(anti_proton_us[0]);
-                }
-            }
-
-            if (lambda_bar_us.size() > 1 && same_event_lambda_bar_us_1.size() < vector_size) {
-                if (anti_proton_id_lambda_bar_us[0] != anti_proton_id_lambda_bar_us[1] || anti_pion_id_lambda_bar_us[0] != anti_pion_id_lambda_bar_us[1]) {
-                    same_event_lambda_bar_us_1.push_back(lambda_bar_us[0]);
-                    same_event_lambda_bar_us_2.push_back(lambda_bar_us[1]);
-                    same_event_anti_proton_us_1.push_back(anti_proton_us[0]);
-                    same_event_anti_proton_us_2.push_back(anti_proton_us[1]);
-                }
-            }
-
-            if (lambda_bar_us.size() > 0 && lambda_bar_ls.size() > 0 && same_event_lambda_bar_us_6.size() < vector_size) {
-                if (anti_proton_id_lambda_bar_us[0] != anti_proton_id_lambda_bar_ls[0] || anti_pion_id_lambda_bar_us[0] != anti_pion_id_lambda_bar_ls[0]) {
-                    same_event_lambda_bar_us_6.push_back(lambda_bar_us[0]);
-                    same_event_lambda_bar_ls_6.push_back(lambda_bar_ls[0]);
-                    same_event_anti_proton_us_6.push_back(anti_proton_us[0]);
-                    same_event_anti_proton_ls_6.push_back(anti_proton_ls[0]);
-                }
-            }
-
-            lambda_us.clear();
-            proton_us.clear();
-            proton_id_lambda_us.clear();
-            pion_id_lambda_us.clear();
-
-            lambda_ls.clear();
-            proton_ls.clear();
-            proton_id_lambda_ls.clear();
-            pion_id_lambda_ls.clear();
-
-            lambda_bar_us.clear();
-            anti_proton_us.clear();
-            anti_proton_id_lambda_bar_us.clear();
-            anti_pion_id_lambda_bar_us.clear();
-
-            lambda_bar_ls.clear();
-            anti_proton_ls.clear();
-            anti_proton_id_lambda_bar_ls.clear();
-            anti_pion_id_lambda_bar_ls.clear();
-        }
-
-        prevEventID = eventId;
-    }
-
     std::cout << "Main Event Loop Complete" << std::endl;
 
     // Kinematic Veriables for Cuts
@@ -578,30 +310,30 @@ void final_lpair_signal_v2(){
     double eta_restrict = 0.1;
 
     // Mixed Event Pairs
-    for (size_t j = 0; j < same_event_lambda_us_1.size(); ++j) {
+    // for (size_t j = 0; j < same_event_lambda_us_1.size(); ++j) {
 
-        float successfull_ME_US_US_LL = 0;
+    //     float successfull_ME_US_US_LL = 0;
 
-        for (size_t k = 0; k < single_lambda_us.size(); ++k) {
-            if (proton_id_lambda_us[j] != proton_id_lambda_us[k] || pion_id_lambda_us[j] != pion_id_lambda_us[k]) {
+    //     for (size_t k = 0; k < single_lambda_us.size(); ++k) {
+    //         if (proton_id_lambda_us[j] != proton_id_lambda_us[k] || pion_id_lambda_us[j] != pion_id_lambda_us[k]) {
 
-                // further pre-selection cuts (?)
-                // double invariantMass_us_1 = same_event_lambda_us_1[j].M();
-                // double invariantMass_us_2 = single_lambda_us[k].M();
+    //             // further pre-selection cuts (?)
+    //             // double invariantMass_us_1 = same_event_lambda_us_1[j].M();
+    //             // double invariantMass_us_2 = single_lambda_us[k].M();
 
-                if (fabs(same_event_lambda_us_2[j].Pt() - single_lambda_us[k].Pt()) > pt_restrict)
-                    continue;
-                if (fabs(same_event_lambda_us_2[j].Phi() - single_lambda_us[k].Phi()) > phi_restrict)
-                    continue;
-                if (fabs(same_event_lambda_us_2[j].Eta() - single_lambda_us[k].Eta()) > eta_restrict)
-                    continue;
+    //             if (fabs(same_event_lambda_us_2[j].Pt() - single_lambda_us[k].Pt()) > pt_restrict)
+    //                 continue;
+    //             if (fabs(same_event_lambda_us_2[j].Phi() - single_lambda_us[k].Phi()) > phi_restrict)
+    //                 continue;
+    //             if (fabs(same_event_lambda_us_2[j].Eta() - single_lambda_us[k].Eta()) > eta_restrict)
+    //                 continue;
 
-                successfull_ME_US_US_LL++;
-            }
-        }
+    //             successfull_ME_US_US_LL++;
+    //         }
+    //     }
 
-        counts_successfull_ME_US_US_LL.push_back(1.0/successfull_ME_US_US_LL);
-    }
+    //     counts_successfull_ME_US_US_LL.push_back(1.0/successfull_ME_US_US_LL);
+    // }
 
     for (size_t j = 0; j < same_event_lambda_us_1.size(); ++j) {
         for (size_t k = 0; k < single_lambda_us.size(); ++k) {
@@ -627,26 +359,26 @@ void final_lpair_signal_v2(){
 
     std::cout << "SE US Lambda - Single US Lambda Complete" << std::endl;
 
-    for (size_t j = 0; j < same_event_lambda_us_3.size(); ++j) {
+    // for (size_t j = 0; j < same_event_lambda_us_3.size(); ++j) {
 
-        float successfull_ME_US_LS_LL = 0;
+    //     float successfull_ME_US_LS_LL = 0;
 
-        for (size_t k = 0; k < single_lambda_ls.size(); ++k) {
-            if (proton_id_lambda_us[j] != proton_id_lambda_ls[k] || pion_id_lambda_us[j] != pion_id_lambda_ls[k]) {
+    //     for (size_t k = 0; k < single_lambda_ls.size(); ++k) {
+    //         if (proton_id_lambda_us[j] != proton_id_lambda_ls[k] || pion_id_lambda_us[j] != pion_id_lambda_ls[k]) {
                     
-                    if (fabs(same_event_lambda_ls_3[j].Pt() - single_lambda_ls[k].Pt()) > pt_restrict)
-                        continue;
-                    if (fabs(same_event_lambda_ls_3[j].Phi() - single_lambda_ls[k].Phi()) > phi_restrict)
-                        continue;
-                    if (fabs(same_event_lambda_ls_3[j].Eta() - single_lambda_ls[k].Eta()) > eta_restrict)
-                        continue;
+    //                 if (fabs(same_event_lambda_ls_3[j].Pt() - single_lambda_ls[k].Pt()) > pt_restrict)
+    //                     continue;
+    //                 if (fabs(same_event_lambda_ls_3[j].Phi() - single_lambda_ls[k].Phi()) > phi_restrict)
+    //                     continue;
+    //                 if (fabs(same_event_lambda_ls_3[j].Eta() - single_lambda_ls[k].Eta()) > eta_restrict)
+    //                     continue;
 
-                successfull_ME_US_LS_LL++;
-            }
-        }
+    //             successfull_ME_US_LS_LL++;
+    //         }
+    //     }
 
-        counts_successfull_ME_US_LS_LL.push_back(1.0 / successfull_ME_US_LS_LL);
-    }    
+    //     counts_successfull_ME_US_LS_LL.push_back(1.0 / successfull_ME_US_LS_LL);
+    // }    
 
     for (size_t j = 0; j < same_event_lambda_us_3.size(); ++j) {
         for (size_t k = 0; k < single_lambda_ls.size(); ++k) {
@@ -675,26 +407,26 @@ void final_lpair_signal_v2(){
 
     std::cout << "SE US Lambda - Single LS Lambda Complete" << std::endl;
 
-    for (size_t j = 0; j < same_event_lambda_us_4.size(); ++j) {
+    // for (size_t j = 0; j < same_event_lambda_us_4.size(); ++j) {
 
-        float successfull_ME_US_US_LLBar = 0;
+    //     float successfull_ME_US_US_LLBar = 0;
 
-        for (size_t k = 0; k < single_lambda_bar_us.size(); ++k){
-            if (proton_id_lambda_us[j] != anti_proton_id_lambda_bar_us[k] || pion_id_lambda_us[j] != anti_pion_id_lambda_bar_us[k]){
+    //     for (size_t k = 0; k < single_lambda_bar_us.size(); ++k){
+    //         if (proton_id_lambda_us[j] != anti_proton_id_lambda_bar_us[k] || pion_id_lambda_us[j] != anti_pion_id_lambda_bar_us[k]){
 
-                if (fabs(same_event_lambda_bar_us_4[j].Pt() - single_lambda_bar_us[k].Pt()) > pt_restrict)
-                    continue;
-                if (fabs(same_event_lambda_bar_us_4[j].Phi() - single_lambda_bar_us[k].Phi()) > phi_restrict)
-                    continue;
-                if (fabs(same_event_lambda_bar_us_4[j].Eta() - single_lambda_bar_us[k].Eta()) > eta_restrict)
-                    continue;
+    //             if (fabs(same_event_lambda_bar_us_4[j].Pt() - single_lambda_bar_us[k].Pt()) > pt_restrict)
+    //                 continue;
+    //             if (fabs(same_event_lambda_bar_us_4[j].Phi() - single_lambda_bar_us[k].Phi()) > phi_restrict)
+    //                 continue;
+    //             if (fabs(same_event_lambda_bar_us_4[j].Eta() - single_lambda_bar_us[k].Eta()) > eta_restrict)
+    //                 continue;
 
-                successfull_ME_US_US_LLBar++;
-            }
-        }
+    //             successfull_ME_US_US_LLBar++;
+    //         }
+    //     }
 
-        counts_successfull_ME_US_US_LLBar.push_back(1.0 / successfull_ME_US_US_LLBar);
-    }
+    //     counts_successfull_ME_US_US_LLBar.push_back(1.0 / successfull_ME_US_US_LLBar);
+    // }
 
     for (size_t j = 0; j < same_event_lambda_us_4.size(); ++j) {
         for (size_t k = 0; k < single_lambda_bar_us.size(); ++k){
@@ -719,26 +451,26 @@ void final_lpair_signal_v2(){
 
     std::cout << "SE US Lambda - Single US Lambda Bar Complete" << std::endl;
 
-    for (size_t j = 0; j < same_event_lambda_us_5.size(); ++j) {
+    // for (size_t j = 0; j < same_event_lambda_us_5.size(); ++j) {
 
-        float successfull_ME_US_LS_LLBar = 0;
+    //     float successfull_ME_US_LS_LLBar = 0;
 
-        for (size_t k = 0; k < single_lambda_bar_ls.size(); ++k) {
-            if (proton_id_lambda_us[j] != anti_proton_id_lambda_bar_ls[k] || pion_id_lambda_us[j] != anti_pion_id_lambda_bar_ls[k]){
+    //     for (size_t k = 0; k < single_lambda_bar_ls.size(); ++k) {
+    //         if (proton_id_lambda_us[j] != anti_proton_id_lambda_bar_ls[k] || pion_id_lambda_us[j] != anti_pion_id_lambda_bar_ls[k]){
     
-                if (fabs(same_event_lambda_bar_ls_5[j].Pt() - single_lambda_bar_ls[k].Pt()) > pt_restrict)
-                    continue;
-                if (fabs(same_event_lambda_bar_ls_5[j].Phi() - single_lambda_bar_ls[k].Phi()) > phi_restrict)
-                    continue;
-                if (fabs(same_event_lambda_bar_ls_5[j].Eta() - single_lambda_bar_ls[k].Eta()) > eta_restrict)
-                    continue;
+    //             if (fabs(same_event_lambda_bar_ls_5[j].Pt() - single_lambda_bar_ls[k].Pt()) > pt_restrict)
+    //                 continue;
+    //             if (fabs(same_event_lambda_bar_ls_5[j].Phi() - single_lambda_bar_ls[k].Phi()) > phi_restrict)
+    //                 continue;
+    //             if (fabs(same_event_lambda_bar_ls_5[j].Eta() - single_lambda_bar_ls[k].Eta()) > eta_restrict)
+    //                 continue;
 
-                successfull_ME_US_LS_LLBar++;
-            }
-        }
+    //             successfull_ME_US_LS_LLBar++;
+    //         }
+    //     }
 
-        counts_successfull_ME_US_LS_LLBar.push_back(1.0 / successfull_ME_US_LS_LLBar);
-    }
+    //     counts_successfull_ME_US_LS_LLBar.push_back(1.0 / successfull_ME_US_LS_LLBar);
+    // }
 
     for (size_t j = 0; j < same_event_lambda_us_5.size(); ++j) {
         for (size_t k = 0; k < single_lambda_bar_ls.size(); ++k) {
@@ -763,26 +495,26 @@ void final_lpair_signal_v2(){
 
     std::cout << "SE US Lambda - Single LS Lambda Bar Complete" << std::endl;
 
-    for (size_t j = 0; j < same_event_lambda_ls_5.size(); ++j) {
+    // for (size_t j = 0; j < same_event_lambda_ls_5.size(); ++j) {
 
-        float successfull_ME_LS_US_LLBar = 0;
+    //     float successfull_ME_LS_US_LLBar = 0;
 
-        for (size_t k = 0; k < single_lambda_bar_us.size(); ++k) {
-            if (proton_id_lambda_ls[j] != anti_proton_id_lambda_bar_us[k] || pion_id_lambda_ls[j] != anti_pion_id_lambda_bar_us[k]){
+    //     for (size_t k = 0; k < single_lambda_bar_us.size(); ++k) {
+    //         if (proton_id_lambda_ls[j] != anti_proton_id_lambda_bar_us[k] || pion_id_lambda_ls[j] != anti_pion_id_lambda_bar_us[k]){
 
-                if (fabs(same_event_lambda_bar_us_5[j].Pt() - single_lambda_bar_us[k].Pt()) > pt_restrict)
-                    continue;
-                if (fabs(same_event_lambda_bar_us_5[j].Phi() - single_lambda_bar_us[k].Phi()) > phi_restrict)
-                    continue;
-                if (fabs(same_event_lambda_bar_us_5[j].Eta() - single_lambda_bar_us[k].Eta()) > eta_restrict)
-                    continue;
+    //             if (fabs(same_event_lambda_bar_us_5[j].Pt() - single_lambda_bar_us[k].Pt()) > pt_restrict)
+    //                 continue;
+    //             if (fabs(same_event_lambda_bar_us_5[j].Phi() - single_lambda_bar_us[k].Phi()) > phi_restrict)
+    //                 continue;
+    //             if (fabs(same_event_lambda_bar_us_5[j].Eta() - single_lambda_bar_us[k].Eta()) > eta_restrict)
+    //                 continue;
 
-                successfull_ME_LS_US_LLBar++;
-            }
-        }
+    //             successfull_ME_LS_US_LLBar++;
+    //         }
+    //     }
 
-        counts_successfull_ME_LS_US_LLBar.push_back(1.0 / successfull_ME_LS_US_LLBar);
-    }
+    //     counts_successfull_ME_LS_US_LLBar.push_back(1.0 / successfull_ME_LS_US_LLBar);
+    // }
 
     for (size_t j = 0; j < same_event_lambda_ls_5.size(); ++j) {
         for (size_t k = 0; k < single_lambda_bar_us.size(); ++k) {
@@ -807,26 +539,26 @@ void final_lpair_signal_v2(){
 
     std::cout << "SE LS Lambda - Single US Lambda Bar Complete" << std::endl;
 
-    for (size_t j = 0; j < same_event_lambda_bar_us_1.size(); ++j) {
+    // for (size_t j = 0; j < same_event_lambda_bar_us_1.size(); ++j) {
 
-        float successfull_ME_US_US_LBarLbar = 0;
+    //     float successfull_ME_US_US_LBarLbar = 0;
 
-        for (size_t k = 0; k < single_lambda_bar_us.size(); ++k) {
-            if (anti_proton_id_lambda_bar_us[j] != anti_proton_id_lambda_bar_us[k] || anti_pion_id_lambda_bar_us[j] != anti_pion_id_lambda_bar_us[k]){
+    //     for (size_t k = 0; k < single_lambda_bar_us.size(); ++k) {
+    //         if (anti_proton_id_lambda_bar_us[j] != anti_proton_id_lambda_bar_us[k] || anti_pion_id_lambda_bar_us[j] != anti_pion_id_lambda_bar_us[k]){
 
-                if (fabs(same_event_lambda_bar_us_2[j].Pt() - single_lambda_bar_us[k].Pt()) > pt_restrict)
-                    continue;
-                if (fabs(same_event_lambda_bar_us_2[j].Phi() - single_lambda_bar_us[k].Phi()) > phi_restrict)
-                    continue;
-                if (fabs(same_event_lambda_bar_us_2[j].Eta() - single_lambda_bar_us[k].Eta()) > eta_restrict)
-                    continue;
+    //             if (fabs(same_event_lambda_bar_us_2[j].Pt() - single_lambda_bar_us[k].Pt()) > pt_restrict)
+    //                 continue;
+    //             if (fabs(same_event_lambda_bar_us_2[j].Phi() - single_lambda_bar_us[k].Phi()) > phi_restrict)
+    //                 continue;
+    //             if (fabs(same_event_lambda_bar_us_2[j].Eta() - single_lambda_bar_us[k].Eta()) > eta_restrict)
+    //                 continue;
 
-                successfull_ME_US_US_LBarLbar++;
-            }
-        }
+    //             successfull_ME_US_US_LBarLbar++;
+    //         }
+    //     }
 
-        counts_successfull_ME_US_US_LBarLBar.push_back(1.0 / successfull_ME_US_US_LBarLbar);
-    }
+    //     counts_successfull_ME_US_US_LBarLBar.push_back(1.0 / successfull_ME_US_US_LBarLbar);
+    // }
 
     for (size_t j = 0; j < same_event_lambda_bar_us_1.size(); ++j) {
         for (size_t k = 0; k < single_lambda_bar_us.size(); ++k) {
@@ -851,26 +583,26 @@ void final_lpair_signal_v2(){
 
     std::cout << "SE US Lambda Bar - Single US Lambda Bar Complete" << std::endl;
 
-    for (size_t j = 0; j < same_event_lambda_bar_us_6.size(); ++j) {
+    // for (size_t j = 0; j < same_event_lambda_bar_us_6.size(); ++j) {
 
-        float successfull_ME_US_LS_LBarLBar = 0;
+    //     float successfull_ME_US_LS_LBarLBar = 0;
 
-        for (size_t k = 0; k < single_lambda_bar_ls.size(); ++k) {
-            if (anti_proton_id_lambda_bar_us[j] != anti_proton_id_lambda_bar_ls[k] || anti_pion_id_lambda_bar_us[j] != anti_pion_id_lambda_bar_ls[k]){
+    //     for (size_t k = 0; k < single_lambda_bar_ls.size(); ++k) {
+    //         if (anti_proton_id_lambda_bar_us[j] != anti_proton_id_lambda_bar_ls[k] || anti_pion_id_lambda_bar_us[j] != anti_pion_id_lambda_bar_ls[k]){
 
-                if (fabs(same_event_lambda_bar_ls_6[j].Pt() - single_lambda_bar_ls[k].Pt()) > pt_restrict)
-                    continue;
-                if (fabs(same_event_lambda_bar_ls_6[j].Phi() - single_lambda_bar_ls[k].Phi()) > phi_restrict)
-                    continue;
-                if (fabs(same_event_lambda_bar_ls_6[j].Eta() - single_lambda_bar_ls[k].Eta()) > eta_restrict)
-                    continue;
+    //             if (fabs(same_event_lambda_bar_ls_6[j].Pt() - single_lambda_bar_ls[k].Pt()) > pt_restrict)
+    //                 continue;
+    //             if (fabs(same_event_lambda_bar_ls_6[j].Phi() - single_lambda_bar_ls[k].Phi()) > phi_restrict)
+    //                 continue;
+    //             if (fabs(same_event_lambda_bar_ls_6[j].Eta() - single_lambda_bar_ls[k].Eta()) > eta_restrict)
+    //                 continue;
 
-                successfull_ME_US_LS_LBarLBar++;
-            }
-        }
+    //             successfull_ME_US_LS_LBarLBar++;
+    //         }
+    //     }
 
-        counts_successfull_ME_US_LS_LBarLBar.push_back(1.0 / successfull_ME_US_LS_LBarLBar);
-    }
+    //     counts_successfull_ME_US_LS_LBarLBar.push_back(1.0 / successfull_ME_US_LS_LBarLBar);
+    // }
 
     for (size_t j = 0; j < same_event_lambda_bar_us_6.size(); ++j) {
         for (size_t k = 0; k < single_lambda_bar_ls.size(); ++k) {
@@ -1888,7 +1620,8 @@ void final_lpair_signal_v2(){
                 if (delta_R > delta_R_Threshold)
                     continue;
             
-            h2_invMass_ME_lambda_us_lambda_us->Fill(counts_successfull_ME_US_US_LL[i] * invariantMass_ME_lambda_us_1, counts_successfull_ME_US_US_LL[i] * invariantMass_ME_lambda_us_2);
+            // h2_invMass_ME_lambda_us_lambda_us->Fill(counts_successfull_ME_US_US_LL[i] * invariantMass_ME_lambda_us_1, counts_successfull_ME_US_US_LL[i] * invariantMass_ME_lambda_us_2);
+            h2_invMass_ME_lambda_us_lambda_us->Fill(invariantMass_ME_lambda_us_1, invariantMass_ME_lambda_us_2);
 
         } else {
             continue;
@@ -2428,6 +2161,42 @@ void final_lpair_signal_v2(){
 
     std::cout << "Canvas 13 Complete" << std::endl;
 
+    // Create a new canvas for plotting B values
+    std::unique_ptr<TCanvas> c14(new TCanvas("c14", "Canvas 14", 1800, 600));
+    c14->Divide(1, 1); // Single pad for plotting all histograms
+
+    // Create histograms for B values
+    TH1D *h_B_LL = new TH1D("h_B_LL", "B values for Lambda - Lambda", 10, -1, 1);
+    TH1D *h_B_LLBar = new TH1D("h_B_LLBar", "B values for Lambda - Lambda Bar", 10, -1, 1);
+    TH1D *h_B_LBarLBar = new TH1D("h_B_LBarLBar", "B values for Lambda Bar - Lambda Bar", 10, -1, 1);
+
+    // Fill histograms with B values
+    h_B_LL->Fill(ME_B); // Lambda - Lambda
+    h_B_LLBar->Fill(ME_B2); // Lambda - Lambda Bar
+    h_B_LBarLBar->Fill(ME_B3); // Lambda Bar - Lambda Bar
+
+    // Draw histograms on canvas
+    c14->cd(1);
+    h_B_LL->SetLineColor(kRed);
+    h_B_LL->SetStats(0); // Disable stats box
+    h_B_LL->Draw("HIST");
+
+    h_B_LLBar->SetLineColor(kBlue);
+    h_B_LLBar->Draw("HIST SAME");
+
+    h_B_LBarLBar->SetLineColor(kGreen);
+    h_B_LBarLBar->Draw("HIST SAME");
+
+    // Add legend
+    auto legend = new TLegend(0.6, 0.7, 0.9, 0.9);
+    legend->AddEntry(h_B_LL, "Lambda - Lambda", "l");
+    legend->AddEntry(h_B_LLBar, "Lambda - Lambda Bar", "l");
+    legend->AddEntry(h_B_LBarLBar, "Lambda Bar - Lambda Bar", "l");
+    legend->Draw();
+
+    // Print completion message
+    std::cout << "Canvas 14 Complete" << std::endl;
+
     c1->Update();
     c1->SaveAs("canvas1.png");
     std::cout << "canvas 1 saved" << std::endl;
@@ -2479,6 +2248,10 @@ void final_lpair_signal_v2(){
     c13->Update();
     c13->SaveAs("canvas13.png");
     std::cout << "canvas 13 saved" << std::endl;
+
+    c14->Update();
+    c14->SaveAs("canvas14.png");
+    std::cout << "canvas 14 saved" << std::endl;
 
 
     // c1->Update();
