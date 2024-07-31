@@ -217,6 +217,20 @@ void ME_pp_analysis(){
     TH2F *h2_lambda_bar_us_lambda_bar_us = new TH2F("h2_lambda_bar_us_lambda_bar_us", "Unlike Sign Lambda Bar - Unlike Sign Lambda Bar (Includes Background)", 500, 1.0, 1.4, 500, 1.0, 1.4);
     TH2F *h2_lambda_bar_us_lambda_bar_ls = new TH2F("h2_lambda_bar_us_lambda_ls", "Unlike Sign Lambda Bar - Like Sign Lambda Bar (Background)", 500, 1.0, 1.4, 500, 1.0, 1.4);
 
+    // Single Lambda and Lambda Bar M_inv Plots
+    TH1F *h1_single_lambda_us = new TH1F("h1_single_lambda_us", "Invariant Mass of US Lambda (GeV/c^2)", 300, 1, 1.4);
+    TH1F *h1_single_lambda_ls = new TH1F("h1_single_lambda_ls", "Invariant Mass of LS Lambda (GeV/c^2)", 300, 1, 1.4);
+    TH1F *h1_single_lambda_bar_us = new TH1F("h1_single_lambda_bar_us", "Invariant Mass of US Lambda Bar (GeV/c^2)", 300, 1, 1.4);
+    TH1F *h1_single_lambda_bar_ls = new TH1F("h1_single_lambda_bar_ls", "Invariant Mass of LS Lambda Bar (GeV/c^2)", 300, 1, 1.4);
+
+    // Mixed Event Histograms
+    TH2F *h2_SE_lambda_us_lambda_us = new TH2F("h2_SE_lambda_us_lambda_us", "test", 500, 1.0, 1.4, 500, 1.0, 1.4);
+    TH2F *h2_SE_lambda_us_lambda_ls = new TH2F("h2_SE_lambda_us_lambda_ls", "test", 500, 1.0, 1.4, 500, 1.0, 1.4);
+    TH2F *h2_SE_lambda_us_lambda_bar_us = new TH2F("h2_SE_lambda_us_lambda_bar_us", "test", 500, 1.0, 1.4, 500, 1.0, 1.4);
+    TH2F *h2_SE_lambda_us_lambda_bar_ls = new TH2F("h2_SE_lambda_us_lambda_bar_ls", "test", 500, 1.0, 1.4, 500, 1.0, 1.4);
+    TH2F *h2_SE_lambda_bar_us_lambda_bar_us = new TH2F("h2_SE_lambda_bar_us_lambda_bar_us", "test", 500, 1.0, 1.4, 500, 1.0, 1.4);
+    TH2F *h2_SE_lambda_bar_us_lambda_bar_ls = new TH2F("h2_SE_lambda_bar_us_lambda_bar_ls", "test", 500, 1.0, 1.4, 500, 1.0, 1.4);
+
     // Mixed Event Histograms
     TH2F *mixed_event_SE_lambda_us_S_lambda_us = new TH2F("mixed_event_SE_lambda_us_S_lambda_us", "test", 500, 1.0, 1.4, 500, 1.0, 1.4);
     TH2F *mixed_event_SE_lambda_us_S_lambda_ls = new TH2F("mixed_event_SE_lambda_us_S_lambda_ls", "test", 500, 1.0, 1.4, 500, 1.0, 1.4);
@@ -319,10 +333,6 @@ void ME_pp_analysis(){
                         continue;
 
                     h2_lambda_us_lambda_us->Fill(lambda_us[j].M(), lambda_us[k].M());
-                    fourmoment_lambda_us_1.push_back(lambda_us[j]);
-                    fourmoment_lambda_us_2.push_back(lambda_us[k]);
-                    fourmoment_proton_us_1.push_back(proton_us[j]);
-                    fourmoment_proton_us_2.push_back(proton_us[k]);
                 }
 
                 for (size_t k = 0; k < lambda_ls.size(); ++k) {
@@ -335,11 +345,6 @@ void ME_pp_analysis(){
                         h2_lambda_us_lambda_ls->Fill(lambda_ls[k].M(), lambda_us[j].M());
                     }
 
-                    fourmoment_lambda_us3.push_back(lambda_us[j]);
-                    fourmoment_lambda_ls3.push_back(lambda_ls[k]);
-                    fourmoment_proton_us3.push_back(proton_us[j]);
-                    fourmoment_proton_ls3.push_back(proton_ls[k]);
-
                     q++; // increase the value by 1
                 }
             }
@@ -350,11 +355,6 @@ void ME_pp_analysis(){
                         continue;
 
                     h2_lambda_us_lambda_bar_us->Fill(lambda_us[j].M(), lambda_bar_us[k].M());
-
-                    fourmoment_lambda_us4.push_back(lambda_us[j]);
-                    fourmoment_lambda_bar_us4.push_back(lambda_bar_us[k]);
-                    fourmoment_proton_us4.push_back(proton_us[j]);
-                    fourmoment_anti_proton_us4.push_back(anti_proton_us[k]);
                 }
 
                 for (size_t k = 0; k < lambda_bar_ls.size(); ++k){
@@ -362,11 +362,6 @@ void ME_pp_analysis(){
                         continue;
 
                     h2_lambda_us_lambda_bar_ls->Fill(lambda_us[j].M(), lambda_bar_ls[k].M());
-
-                    fourmoment_lambda_us5.push_back(lambda_us[j]);
-                    fourmoment_lambda_bar_ls5.push_back(lambda_bar_ls[k]);
-                    fourmoment_proton_us5.push_back(proton_us[j]);
-                    fourmoment_anti_proton_ls5.push_back(anti_proton_ls[k]);
                 }
             }
 
@@ -376,11 +371,6 @@ void ME_pp_analysis(){
                         continue;
 
                     h2_lambda_us_lambda_bar_ls->Fill(lambda_ls[j].M(), lambda_bar_us[k].M());
-
-                    fourmoment_lambda_ls6.push_back(lambda_ls[j]);
-                    fourmoment_lambda_bar_us6.push_back(lambda_bar_us[k]);
-                    fourmoment_proton_ls6.push_back(proton_ls[j]);
-                    fourmoment_anti_proton_us6.push_back(anti_proton_us[k]);
                 }
             }
 
@@ -390,10 +380,6 @@ void ME_pp_analysis(){
                         continue;
 
                     h2_lambda_bar_us_lambda_bar_us->Fill(lambda_bar_us[j].M(), lambda_bar_us[k].M());
-                    fourmoment_lambda_bar_us_1.push_back(lambda_bar_us[j]);
-                    fourmoment_lambda_bar_us_2.push_back(lambda_bar_us[k]);
-                    fourmoment_anti_proton_us_1.push_back(anti_proton_us[j]);
-                    fourmoment_anti_proton_us_2.push_back(anti_proton_us[k]);
                 }
 
                 for (size_t k = 0; k < lambda_ls.size(); ++k){
@@ -406,11 +392,6 @@ void ME_pp_analysis(){
                         h2_lambda_bar_us_lambda_bar_ls->Fill(lambda_bar_ls[k].M(), lambda_bar_us[j].M());
                     }
 
-                    fourmoment_lambda_bar_us7.push_back(lambda_bar_us[j]);
-                    fourmoment_lambda_bar_ls7.push_back(lambda_bar_ls[k]);
-                    fourmoment_anti_proton_us7.push_back(anti_proton_us[j]);
-                    fourmoment_anti_proton_ls7.push_back(anti_proton_ls[k]);
-
                     b++; // increase the value by 1
                 }
             }
@@ -419,17 +400,21 @@ void ME_pp_analysis(){
             int vector_size = 1e4;
 
             if (lambda_us.size() == 1 && lambda_bar_us.size() == 0 && single_lambda_us.size() < vector_size){
+                h1_single_lambda_us->Fill(lambda_us[0].M());
                 single_lambda_us.push_back(lambda_us[0]);
                 single_proton_us.push_back(proton_us[0]);
             } else if (lambda_us.size() == 0 && lambda_bar_us.size() == 1 && single_lambda_bar_us.size() < vector_size) {
+                h1_single_lambda_bar_us->Fill(lambda_bar_us[0].M());
                 single_lambda_bar_us.push_back(lambda_bar_us[0]);
                 single_anti_proton_us.push_back(anti_proton_us[0]);
             }
 
             if (lambda_ls.size() == 1 && lambda_bar_ls.size() == 0 && single_lambda_ls.size() < vector_size){
+                h1_single_lambda_ls->Fill(lambda_ls[0].M());
                 single_lambda_ls.push_back(lambda_ls[0]);
                 single_proton_ls.push_back(proton_ls[0]);
             } else if (lambda_ls.size() == 0 && lambda_bar_ls.size() == 1 && single_lambda_bar_ls.size() < vector_size) {
+                h1_single_lambda_bar_ls->Fill(lambda_bar_ls[0].M());
                 single_lambda_bar_ls.push_back(lambda_bar_ls[0]);
                 single_anti_proton_ls.push_back(anti_proton_ls[0]);
             }
@@ -439,6 +424,9 @@ void ME_pp_analysis(){
             // Lambda - Lambda Pairs
             if (lambda_us.size() > 1 && same_event_lambda_us_1.size() < vector_size) {
                 if (proton_id_lambda_us[0] != proton_id_lambda_us[1] || pion_id_lambda_us[0] != pion_id_lambda_us[1]) {
+
+                    h2_SE_lambda_us_lambda_us->Fill(lambda_us[0].M(), lambda_us[1].M());
+
                     same_event_lambda_us_1.push_back(lambda_us[0]);
                     same_event_lambda_us_2.push_back(lambda_us[1]);
                     same_event_proton_us_1.push_back(proton_us[0]);
@@ -448,6 +436,13 @@ void ME_pp_analysis(){
 
             if (lambda_us.size() > 0 && lambda_ls.size() > 0 && same_event_lambda_us_3.size() < vector_size) {
                 if (proton_id_lambda_us[0] != proton_id_lambda_ls[0] || pion_id_lambda_us[0] != pion_id_lambda_ls[0]) {
+
+                    if (q % 2 == 0) {
+                        h2_SE_lambda_us_lambda_ls->Fill(lambda_us[0].M(), lambda_ls[0].M());
+                    } else {
+                        h2_SE_lambda_us_lambda_ls->Fill(lambda_ls[0].M(), lambda_us[0].M());
+                    }
+
                     same_event_lambda_us_3.push_back(lambda_us[0]);
                     same_event_lambda_ls_3.push_back(lambda_ls[0]);
                     same_event_proton_us_3.push_back(proton_us[0]);
@@ -458,6 +453,9 @@ void ME_pp_analysis(){
             // Lambda Bar - Lambda Bar Pairs
             if (lambda_us.size() > 0 && lambda_bar_us.size() > 0 && same_event_lambda_us_4.size() < vector_size) {
                 if (proton_id_lambda_us[0] != anti_proton_id_lambda_bar_us[0] || pion_id_lambda_us[0] != anti_pion_id_lambda_bar_us[0]) {
+
+                    h2_SE_lambda_us_lambda_bar_us->Fill(lambda_us[0].M(), lambda_bar_us[0].M());
+
                     same_event_lambda_us_4.push_back(lambda_us[0]);
                     same_event_lambda_bar_us_4.push_back(lambda_bar_us[0]);
                     same_event_proton_us_4.push_back(proton_us[0]);
@@ -467,6 +465,9 @@ void ME_pp_analysis(){
 
             if (lambda_us.size() > 0 && lambda_bar_ls.size() > 0 && same_event_lambda_us_5.size() < vector_size) {
                 if (proton_id_lambda_us[0] != anti_proton_id_lambda_bar_ls[0] || pion_id_lambda_us[0] != anti_pion_id_lambda_bar_ls[0]) {
+
+                    h2_SE_lambda_us_lambda_bar_ls->Fill(lambda_us[0].M(), lambda_bar_ls[0].M());
+
                     same_event_lambda_us_5.push_back(lambda_us[0]);
                     same_event_lambda_bar_ls_5.push_back(lambda_bar_ls[0]);
                     same_event_proton_us_5.push_back(proton_us[0]);
@@ -476,6 +477,9 @@ void ME_pp_analysis(){
 
             if (lambda_ls.size() > 0 && lambda_bar_us.size() > 0 && same_event_lambda_ls_5.size() < vector_size) {
                 if (proton_id_lambda_ls[0] != anti_proton_id_lambda_bar_us[0] || pion_id_lambda_ls[0] != anti_pion_id_lambda_bar_us[0]) {
+
+                    h2_SE_lambda_us_lambda_bar_ls->Fill(lambda_ls[0].M(), lambda_bar_us[0].M());
+
                     same_event_lambda_ls_5.push_back(lambda_ls[0]);
                     same_event_lambda_bar_us_5.push_back(lambda_bar_us[0]);
                     same_event_proton_ls_5.push_back(proton_ls[0]);
@@ -485,6 +489,9 @@ void ME_pp_analysis(){
 
             if (lambda_bar_us.size() > 1 && same_event_lambda_bar_us_1.size() < vector_size) {
                 if (anti_proton_id_lambda_bar_us[0] != anti_proton_id_lambda_bar_us[1] || anti_pion_id_lambda_bar_us[0] != anti_pion_id_lambda_bar_us[1]) {
+
+                    h2_SE_lambda_bar_us_lambda_bar_us->Fill(lambda_bar_us[0].M(), lambda_bar_us[1].M());
+
                     same_event_lambda_bar_us_1.push_back(lambda_bar_us[0]);
                     same_event_lambda_bar_us_2.push_back(lambda_bar_us[1]);
                     same_event_anti_proton_us_1.push_back(anti_proton_us[0]);
@@ -494,6 +501,13 @@ void ME_pp_analysis(){
 
             if (lambda_bar_us.size() > 0 && lambda_bar_ls.size() > 0 && same_event_lambda_bar_us_6.size() < vector_size) {
                 if (anti_proton_id_lambda_bar_us[0] != anti_proton_id_lambda_bar_ls[0] || anti_pion_id_lambda_bar_us[0] != anti_pion_id_lambda_bar_ls[0]) {
+
+                    if (q % 2 == 0) {
+                        h2_SE_lambda_bar_us_lambda_bar_ls->Fill(lambda_bar_us[0].M(), lambda_bar_ls[0].M());
+                    } else {
+                        h2_SE_lambda_bar_us_lambda_bar_ls->Fill(lambda_bar_ls[0].M(), lambda_bar_us[0].M());
+                    }
+
                     same_event_lambda_bar_us_6.push_back(lambda_bar_us[0]);
                     same_event_lambda_bar_ls_6.push_back(lambda_bar_ls[0]);
                     same_event_anti_proton_us_6.push_back(anti_proton_us[0]);
@@ -704,6 +718,95 @@ void ME_pp_analysis(){
 
     std::cout << "Mixed Event Pairings Complete" << std::endl;
 
+    // Create histograms for the background subtraction
+    TH1F *h1_diff_l = new TH1F(*h1_single_lambda_us);
+    h1_diff_l->Add(h1_single_lambda_ls, -1);
+
+    TH1F *h1_diff_lbar = new TH1F(*h1_single_lambda_bar_us);
+    h1_diff_lbar->Add(h1_single_lambda_bar_ls, -1);
+
+    std::unique_ptr<TCanvas> c1(new TCanvas("c1", "Canvas 1", 1800, 900));
+    c1->Divide(1, 2);
+
+    c1->cd(1);
+    h1_single_lambda_us->SetLineColor(kBlue);
+    h1_single_lambda_us->SetLineWidth(3);
+    h1_single_lambda_us->Draw();
+
+    h1_single_lambda_ls->SetLineColor(kRed);
+    h1_single_lambda_ls->SetLineWidth(3);
+    h1_single_lambda_ls->Draw("same");
+
+    h1_diff_l->SetLineColor(kBlack);
+    h1_diff_l->SetLineWidth(5);
+    h1_diff_l->SetLineStyle(6);
+    h1_diff_l->Draw("same");
+
+    c1->cd(2);
+    h1_single_lambda_bar_us->SetLineColor(kBlue);
+    h1_single_lambda_bar_us->SetLineWidth(3);
+    h1_single_lambda_bar_us->Draw();
+
+    h1_single_lambda_bar_ls->SetLineColor(kRed);
+    h1_single_lambda_bar_ls->SetLineWidth(3);
+    h1_single_lambda_bar_ls->Draw("same");
+
+    h1_diff_lbar->SetLineColor(kBlack);
+    h1_diff_lbar->SetLineWidth(5);
+    h1_diff_lbar->SetLineStyle(6);
+    h1_diff_lbar->Draw("same");
+
+    // Background subtractions for the Invariant Mass of the Mixed Events
+    TH2F *h2_LL_Signal_SE = new TH2F(*h2_SE_lambda_us_lambda_us);
+    h2_LL_Signal_SE->Add(h2_SE_lambda_us_lambda_ls, -1.0);
+
+    TH2F *h2_LLBar_Signal_SE = new TH2F(*h2_SE_lambda_us_lambda_bar_us);
+    h2_LLBar_Signal_SE->Add(h2_SE_lambda_us_lambda_bar_ls, -1.0);
+
+    TH2F *h2_LBarLBar_Signal_SE = new TH2F(*h2_SE_lambda_bar_us_lambda_bar_us);
+    h2_LBarLBar_Signal_SE->Add(h2_SE_lambda_bar_us_lambda_bar_ls, -1.0);
+
+    std::unique_ptr<TCanvas> c2(new TCanvas("c2", "Canvas 2", 1800, 900));
+    c2->Divide(3, 1);
+
+    double minX = 1.11;
+    double maxX = 1.12;
+    double minY = 1.11;
+    double maxY = 1.12;
+
+    c2->cd(1);
+    int binMinX = h2_LL_Signal_SE->GetXaxis()->FindBin(minX);
+    int binMaxX = h2_LL_Signal_SE->GetXaxis()->FindBin(maxX);
+    int binMinY = h2_LL_Signal_SE->GetYaxis()->FindBin(minY);
+    int binMaxY = h2_LL_Signal_SE->GetYaxis()->FindBin(maxY);
+
+    h2_LL_Signal_SE->GetXaxis()->SetRange(binMinX, binMaxX);
+    h2_LL_Signal_SE->GetYaxis()->SetRange(binMinY, binMaxY);
+    h2_LL_Signal_SE->Draw("SURF2");
+    h2_LL_Signal_SE->SetTitle("Lambda - Lambda Pair Signal (SE)");
+
+    c2->cd(2);
+    binMinX = h2_LLBar_Signal_SE->GetXaxis()->FindBin(minX);
+    binMaxX = h2_LLBar_Signal_SE->GetXaxis()->FindBin(maxX);
+    binMinY = h2_LLBar_Signal_SE->GetYaxis()->FindBin(minY);
+    binMaxY = h2_LLBar_Signal_SE->GetYaxis()->FindBin(maxY);
+
+    h2_LLBar_Signal_SE->GetXaxis()->SetRange(binMinX, binMaxX);
+    h2_LLBar_Signal_SE->GetYaxis()->SetRange(binMinY, binMaxY);
+    h2_LLBar_Signal_SE->Draw("SURF2");
+    h2_LLBar_Signal_SE->SetTitle("Lambda - Lambda Pair Signal (SE)");
+
+    c2->cd(3);
+    binMinX = h2_LBarLBar_Signal_SE->GetXaxis()->FindBin(minX);
+    binMaxX = h2_LLBar_Signal_SE->GetXaxis()->FindBin(maxX);
+    binMinY = h2_LLBar_Signal_SE->GetYaxis()->FindBin(minY);
+    binMaxY = h2_LLBar_Signal_SE->GetYaxis()->FindBin(maxY);
+
+    h2_LLBar_Signal_SE->GetXaxis()->SetRange(binMinX, binMaxX);
+    h2_LLBar_Signal_SE->GetYaxis()->SetRange(binMinY, binMaxY);
+    h2_LLBar_Signal_SE->Draw("SURF2");
+    h2_LLBar_Signal_SE->SetTitle("Lambda - Lambda Pair Signal (SE)");
+
     // Background subtractions for the Invariant Mass of the Mixed Events
     TH2F *h2_LL_Signal_ME = new TH2F(*mixed_event_SE_lambda_us_S_lambda_us);
     h2_LL_Signal_ME->Add(mixed_event_SE_lambda_us_S_lambda_ls, -1.0);
@@ -715,19 +818,14 @@ void ME_pp_analysis(){
     h2_LBarLBar_Signal_ME->Add(mixed_event_SE_lambda_bar_us_S_lambda_bar_ls, -1.0);
 
     // Canvas 1: Invariant Mass Distribution and Gaussian Fit for Mixed Event Pairs
-    std::unique_ptr<TCanvas> c1(new TCanvas("c1", "Canvas 1", 1800, 900));
-    c1->Divide(3, 2);
+    std::unique_ptr<TCanvas> c3(new TCanvas("c3", "Canvas 3", 1800, 900));
+    c3->Divide(3, 2);
 
-    double minX = 1.11;
-    double maxX = 1.12;
-    double minY = 1.11;
-    double maxY = 1.12;
-
-    c1->cd(1);
-    int binMinX = h2_LL_Signal_ME->GetXaxis()->FindBin(minX);
-    int binMaxX = h2_LL_Signal_ME->GetXaxis()->FindBin(maxX);
-    int binMinY = h2_LL_Signal_ME->GetYaxis()->FindBin(minY);
-    int binMaxY = h2_LL_Signal_ME->GetYaxis()->FindBin(maxY);
+    c3->cd(1);
+    binMinX = h2_LL_Signal_ME->GetXaxis()->FindBin(minX);
+    binMaxX = h2_LL_Signal_ME->GetXaxis()->FindBin(maxX);
+    binMinY = h2_LL_Signal_ME->GetYaxis()->FindBin(minY);
+    binMaxY = h2_LL_Signal_ME->GetYaxis()->FindBin(maxY);
 
     h2_LL_Signal_ME->GetXaxis()->SetRange(binMinX, binMaxX);
     h2_LL_Signal_ME->GetYaxis()->SetRange(binMinY, binMaxY);
@@ -752,11 +850,11 @@ void ME_pp_analysis(){
     std::cout << "p3 (Mean Y): " << p3 << std::endl;
     std::cout << "p4 (Sigma Y): " << p4 << std::endl;
 
-    c1->cd(4);
+    c3->cd(4);
     gaus2D_LL_ME->Draw("SURF2");
     gaus2D_LL_ME->SetTitle("Gaussian Fit for Lambda - Lambda Pair Signal (ME)");
 
-    c1->cd(2);
+    c3->cd(2);
     binMinX = h2_LLBar_Signal_ME->GetXaxis()->FindBin(minX);
     binMaxX = h2_LLBar_Signal_ME->GetXaxis()->FindBin(maxX);
     binMinY = h2_LLBar_Signal_ME->GetYaxis()->FindBin(minY);
@@ -785,11 +883,11 @@ void ME_pp_analysis(){
     std::cout << "p3 (Mean Y): " << p3_2 << std::endl;
     std::cout << "p4 (Sigma Y): " << p4_2 << std::endl;
 
-    c1->cd(5);
+    c3->cd(5);
     gaus2D_LLBar_ME->Draw("SURF2");
     gaus2D_LLBar_ME->SetTitle("Gaussian Fit for Lambda Bar - Lambda Bar Pair Signal (ME)");
 
-    c1->cd(3);
+    c3->cd(3);
     binMinX = h2_LBarLBar_Signal_ME->GetXaxis()->FindBin(minX);
     binMaxX = h2_LBarLBar_Signal_ME->GetXaxis()->FindBin(maxX);
     binMinY = h2_LBarLBar_Signal_ME->GetYaxis()->FindBin(minY);
@@ -818,131 +916,131 @@ void ME_pp_analysis(){
     std::cout << "p3 (Mean Y): " << p3_3 << std::endl;
     std::cout << "p4 (Sigma Y): " << p4_3 << std::endl;
 
-    c1->cd(6);
+    c3->cd(6);
     gaus2D_LBarLBar_ME->Draw("SURF2");
     gaus2D_LBarLBar_ME->SetTitle("Gaussian Fit for Lambda Bar - Lambda Bar Pair Signal (ME)");
 
     std::cout << "Canvas 1 Complete" << std::endl;
 
-    // Canvas 4: X and Y projections of the Invarian Mass (ME)
-    std::unique_ptr<TCanvas> c2(new TCanvas("c2", "Canvas 2", 1800, 900));
-    c2->Divide(3, 2);
+    // // Canvas 4: X and Y projections of the Invarian Mass (ME)
+    // std::unique_ptr<TCanvas> c2(new TCanvas("c2", "Canvas 2", 1800, 900));
+    // c2->Divide(3, 2);
 
-    c2->cd(1);
-    TH1D *projX_LL_ME = h2_LL_Signal_ME->ProjectionX("projX_LL_ME", binMinX, binMaxX);
-    projX_LL_ME->GetXaxis()->SetRange(binMinX, binMaxX);
-    projX_LL_ME->SetLineColor(kBlue+2);
-    projX_LL_ME->SetLineWidth(3);
-    projX_LL_ME->Draw();
-    projX_LL_ME->SetTitle("Lambda - Lambda Signal (x axis)");
+    // c2->cd(1);
+    // TH1D *projX_LL_ME = h2_LL_Signal_ME->ProjectionX("projX_LL_ME", binMinX, binMaxX);
+    // projX_LL_ME->GetXaxis()->SetRange(binMinX, binMaxX);
+    // projX_LL_ME->SetLineColor(kBlue+2);
+    // projX_LL_ME->SetLineWidth(3);
+    // projX_LL_ME->Draw();
+    // projX_LL_ME->SetTitle("Lambda - Lambda Signal (x axis)");
 
-    int MeanX_LL_ME = h2_LL_Signal_ME->GetXaxis()->FindBin(gaus2D_LL_ME->GetParameter(3));
-    TH1D *meanX_LL_ME = h2_LL_Signal_ME->ProjectionX("meanX_LL_ME", MeanX_LL_ME, MeanX_LL_ME);
-    meanX_LL_ME->SetLineColor(kViolet-2);
-    meanX_LL_ME->SetLineWidth(3);
-    meanX_LL_ME->Draw("same");
+    // int MeanX_LL_ME = h2_LL_Signal_ME->GetXaxis()->FindBin(gaus2D_LL_ME->GetParameter(3));
+    // TH1D *meanX_LL_ME = h2_LL_Signal_ME->ProjectionX("meanX_LL_ME", MeanX_LL_ME, MeanX_LL_ME);
+    // meanX_LL_ME->SetLineColor(kViolet-2);
+    // meanX_LL_ME->SetLineWidth(3);
+    // meanX_LL_ME->Draw("same");
 
-    TF12 *proj_gausX_LL_ME = new TF12("proj_gausX_LL_ME", gaus2D_LL_ME, gaus2D_LL_ME->GetParameter(3), "x");
-    proj_gausX_LL_ME->SetLineColor(kRed+1);
-    proj_gausX_LL_ME->SetLineWidth(3);
-    proj_gausX_LL_ME->Draw("same");
+    // TF12 *proj_gausX_LL_ME = new TF12("proj_gausX_LL_ME", gaus2D_LL_ME, gaus2D_LL_ME->GetParameter(3), "x");
+    // proj_gausX_LL_ME->SetLineColor(kRed+1);
+    // proj_gausX_LL_ME->SetLineWidth(3);
+    // proj_gausX_LL_ME->Draw("same");
 
-    c2->cd(2);
-    TH1D *projX_LLBar_ME = h2_LLBar_Signal_ME->ProjectionX("projX_LLBar_ME", binMinX, binMaxX);
-    projX_LLBar_ME->GetXaxis()->SetRange(binMinX, binMaxX);
-    projX_LLBar_ME->SetLineColor(kBlue+2);
-    projX_LLBar_ME->SetLineWidth(3);
-    projX_LLBar_ME->Draw();
-    projX_LLBar_ME->SetTitle("Lambda - Lambda Bar Signal (x axis)");
+    // c2->cd(2);
+    // TH1D *projX_LLBar_ME = h2_LLBar_Signal_ME->ProjectionX("projX_LLBar_ME", binMinX, binMaxX);
+    // projX_LLBar_ME->GetXaxis()->SetRange(binMinX, binMaxX);
+    // projX_LLBar_ME->SetLineColor(kBlue+2);
+    // projX_LLBar_ME->SetLineWidth(3);
+    // projX_LLBar_ME->Draw();
+    // projX_LLBar_ME->SetTitle("Lambda - Lambda Bar Signal (x axis)");
 
-    int MeanX_LLBar_ME = h2_LLBar_Signal_ME->GetXaxis()->FindBin(gaus2D_LLBar_ME->GetParameter(3));
-    TH1D *meanX_LLBar_ME = h2_LLBar_Signal_ME->ProjectionX("meanX_LLBar_ME", MeanX_LLBar_ME, MeanX_LLBar_ME);
-    meanX_LLBar_ME->SetLineColor(kViolet-2);
-    meanX_LLBar_ME->SetLineWidth(3);
-    meanX_LLBar_ME->Draw("same");
+    // int MeanX_LLBar_ME = h2_LLBar_Signal_ME->GetXaxis()->FindBin(gaus2D_LLBar_ME->GetParameter(3));
+    // TH1D *meanX_LLBar_ME = h2_LLBar_Signal_ME->ProjectionX("meanX_LLBar_ME", MeanX_LLBar_ME, MeanX_LLBar_ME);
+    // meanX_LLBar_ME->SetLineColor(kViolet-2);
+    // meanX_LLBar_ME->SetLineWidth(3);
+    // meanX_LLBar_ME->Draw("same");
 
-    TF12 *proj_gausX_LLBar_ME = new TF12("proj_gausX_LLBar_ME", gaus2D_LLBar_ME, gaus2D_LLBar_ME->GetParameter(3), "x");
-    proj_gausX_LLBar_ME->SetLineColor(kRed+1);
-    proj_gausX_LLBar_ME->SetLineWidth(3);
-    proj_gausX_LLBar_ME->Draw("same");
+    // TF12 *proj_gausX_LLBar_ME = new TF12("proj_gausX_LLBar_ME", gaus2D_LLBar_ME, gaus2D_LLBar_ME->GetParameter(3), "x");
+    // proj_gausX_LLBar_ME->SetLineColor(kRed+1);
+    // proj_gausX_LLBar_ME->SetLineWidth(3);
+    // proj_gausX_LLBar_ME->Draw("same");
 
-    c2->cd(3);
-    TH1D *projX_LBarLBar_ME = h2_LBarLBar_Signal_ME->ProjectionX("projX_LBarLBar_ME", binMinX, binMaxX);
-    projX_LBarLBar_ME->GetXaxis()->SetRange(binMinX, binMaxX);
-    projX_LBarLBar_ME->SetLineColor(kBlue+2);
-    projX_LBarLBar_ME->SetLineWidth(3);
-    projX_LBarLBar_ME->Draw();
-    projX_LBarLBar_ME->SetTitle("Lambda Bar - Lambda Bar Signal (x axis)");
+    // c2->cd(3);
+    // TH1D *projX_LBarLBar_ME = h2_LBarLBar_Signal_ME->ProjectionX("projX_LBarLBar_ME", binMinX, binMaxX);
+    // projX_LBarLBar_ME->GetXaxis()->SetRange(binMinX, binMaxX);
+    // projX_LBarLBar_ME->SetLineColor(kBlue+2);
+    // projX_LBarLBar_ME->SetLineWidth(3);
+    // projX_LBarLBar_ME->Draw();
+    // projX_LBarLBar_ME->SetTitle("Lambda Bar - Lambda Bar Signal (x axis)");
 
-    int MeanX_LBarLBar_ME = h2_LBarLBar_Signal_ME->GetXaxis()->FindBin(gaus2D_LBarLBar_ME->GetParameter(3));
-    TH1D *meanX_LBarLBar_ME = h2_LBarLBar_Signal_ME->ProjectionX("meanX_LBarLBar_ME", MeanX_LBarLBar_ME, MeanX_LBarLBar_ME);
-    meanX_LBarLBar_ME->SetLineColor(kViolet-2);
-    meanX_LBarLBar_ME->SetLineWidth(3);
-    meanX_LBarLBar_ME->Draw("same");
+    // int MeanX_LBarLBar_ME = h2_LBarLBar_Signal_ME->GetXaxis()->FindBin(gaus2D_LBarLBar_ME->GetParameter(3));
+    // TH1D *meanX_LBarLBar_ME = h2_LBarLBar_Signal_ME->ProjectionX("meanX_LBarLBar_ME", MeanX_LBarLBar_ME, MeanX_LBarLBar_ME);
+    // meanX_LBarLBar_ME->SetLineColor(kViolet-2);
+    // meanX_LBarLBar_ME->SetLineWidth(3);
+    // meanX_LBarLBar_ME->Draw("same");
 
-    TF12 *proj_gausX_LBarLBar_ME = new TF12("proj_gausX_LBarLBar_ME", gaus2D_LBarLBar_ME, gaus2D_LBarLBar_ME->GetParameter(3), "x");
-    proj_gausX_LBarLBar_ME->SetLineColor(kRed+1);
-    proj_gausX_LBarLBar_ME->SetLineWidth(3);
-    proj_gausX_LBarLBar_ME->Draw("same");
+    // TF12 *proj_gausX_LBarLBar_ME = new TF12("proj_gausX_LBarLBar_ME", gaus2D_LBarLBar_ME, gaus2D_LBarLBar_ME->GetParameter(3), "x");
+    // proj_gausX_LBarLBar_ME->SetLineColor(kRed+1);
+    // proj_gausX_LBarLBar_ME->SetLineWidth(3);
+    // proj_gausX_LBarLBar_ME->Draw("same");
 
-    c2->cd(4);
-    TH1D *projY_LL_ME = h2_LL_Signal_ME->ProjectionY("projY_LL_ME", binMinY, binMaxY);
-    projY_LL_ME->GetYaxis()->SetRange(binMinY, binMaxY);
-    projY_LL_ME->SetLineColor(kBlue+2);
-    projY_LL_ME->SetLineWidth(3);
-    projY_LL_ME->Draw();
-    projY_LL_ME->SetTitle("Lambda - Lambda Signal (y axis)");
+    // c2->cd(4);
+    // TH1D *projY_LL_ME = h2_LL_Signal_ME->ProjectionY("projY_LL_ME", binMinY, binMaxY);
+    // projY_LL_ME->GetYaxis()->SetRange(binMinY, binMaxY);
+    // projY_LL_ME->SetLineColor(kBlue+2);
+    // projY_LL_ME->SetLineWidth(3);
+    // projY_LL_ME->Draw();
+    // projY_LL_ME->SetTitle("Lambda - Lambda Signal (y axis)");
 
-    int MeanY_LL_ME = h2_LL_Signal_ME->GetYaxis()->FindBin(gaus2D_LL_ME->GetParameter(1));
-    TH1D *meanY_LL_ME = h2_LL_Signal_ME->ProjectionY("meanY_LL_ME", MeanY_LL_ME, MeanY_LL_ME);
-    meanY_LL_ME->SetLineColor(kViolet-2);
-    meanY_LL_ME->SetLineWidth(3);
-    meanY_LL_ME->Draw("same");
+    // int MeanY_LL_ME = h2_LL_Signal_ME->GetYaxis()->FindBin(gaus2D_LL_ME->GetParameter(1));
+    // TH1D *meanY_LL_ME = h2_LL_Signal_ME->ProjectionY("meanY_LL_ME", MeanY_LL_ME, MeanY_LL_ME);
+    // meanY_LL_ME->SetLineColor(kViolet-2);
+    // meanY_LL_ME->SetLineWidth(3);
+    // meanY_LL_ME->Draw("same");
 
-    TF12 *proj_gausY_LL_ME = new TF12("proj_gausY_LL_ME", gaus2D_LL_ME, gaus2D_LL_ME->GetParameter(1), "y");
-    proj_gausY_LL_ME->SetLineColor(kRed+1);
-    proj_gausY_LL_ME->SetLineWidth(3);
-    proj_gausY_LL_ME->Draw("same");
+    // TF12 *proj_gausY_LL_ME = new TF12("proj_gausY_LL_ME", gaus2D_LL_ME, gaus2D_LL_ME->GetParameter(1), "y");
+    // proj_gausY_LL_ME->SetLineColor(kRed+1);
+    // proj_gausY_LL_ME->SetLineWidth(3);
+    // proj_gausY_LL_ME->Draw("same");
 
-    c2->cd(5);
-    TH1D *projY_LLBar_ME = h2_LLBar_Signal_ME->ProjectionY("projY_LLBar_ME", binMinY, binMaxY);
-    projY_LLBar_ME->GetYaxis()->SetRange(binMinY, binMaxY);
-    projY_LLBar_ME->SetLineColor(kBlue+2);
-    projY_LLBar_ME->SetLineWidth(3);
-    projY_LLBar_ME->Draw();
-    projY_LLBar_ME->SetTitle("Lambda - Lambda Signal (y axis)");
+    // c2->cd(5);
+    // TH1D *projY_LLBar_ME = h2_LLBar_Signal_ME->ProjectionY("projY_LLBar_ME", binMinY, binMaxY);
+    // projY_LLBar_ME->GetYaxis()->SetRange(binMinY, binMaxY);
+    // projY_LLBar_ME->SetLineColor(kBlue+2);
+    // projY_LLBar_ME->SetLineWidth(3);
+    // projY_LLBar_ME->Draw();
+    // projY_LLBar_ME->SetTitle("Lambda - Lambda Signal (y axis)");
 
-    int MeanY_LLBar_ME = h2_LLBar_Signal_ME->GetYaxis()->FindBin(gaus2D_LLBar_ME->GetParameter(1));
-    TH1D *meanY_LLBar_ME = h2_LLBar_Signal_ME->ProjectionY("meanY_LLBar_ME", MeanY_LLBar_ME, MeanY_LLBar_ME);
-    meanY_LLBar_ME->SetLineColor(kViolet-2);
-    meanY_LLBar_ME->SetLineWidth(3);
-    meanY_LLBar_ME->Draw("same");
+    // int MeanY_LLBar_ME = h2_LLBar_Signal_ME->GetYaxis()->FindBin(gaus2D_LLBar_ME->GetParameter(1));
+    // TH1D *meanY_LLBar_ME = h2_LLBar_Signal_ME->ProjectionY("meanY_LLBar_ME", MeanY_LLBar_ME, MeanY_LLBar_ME);
+    // meanY_LLBar_ME->SetLineColor(kViolet-2);
+    // meanY_LLBar_ME->SetLineWidth(3);
+    // meanY_LLBar_ME->Draw("same");
 
-    TF12 *proj_gausY_LLBar_ME = new TF12("proj_gausY_LLBar_ME", gaus2D_LLBar_ME, gaus2D_LLBar_ME->GetParameter(1), "y");
-    proj_gausY_LLBar_ME->SetLineColor(kRed+1);
-    proj_gausY_LLBar_ME->SetLineWidth(3);
-    proj_gausY_LLBar_ME->Draw("same");
+    // TF12 *proj_gausY_LLBar_ME = new TF12("proj_gausY_LLBar_ME", gaus2D_LLBar_ME, gaus2D_LLBar_ME->GetParameter(1), "y");
+    // proj_gausY_LLBar_ME->SetLineColor(kRed+1);
+    // proj_gausY_LLBar_ME->SetLineWidth(3);
+    // proj_gausY_LLBar_ME->Draw("same");
 
-    c2->cd(6);
-    TH1D *projY_LBarLBar_ME = h2_LBarLBar_Signal_ME->ProjectionY("projY_LBarLBar_ME", binMinY, binMaxY);
-    projY_LBarLBar_ME->GetYaxis()->SetRange(binMinY, binMaxY);
-    projY_LBarLBar_ME->SetLineColor(kBlue+2);
-    projY_LBarLBar_ME->SetLineWidth(3);
-    projY_LBarLBar_ME->Draw();
-    projY_LBarLBar_ME->SetTitle("Lambda Bar - Lambda Bar Signal (y axis)");
+    // c2->cd(6);
+    // TH1D *projY_LBarLBar_ME = h2_LBarLBar_Signal_ME->ProjectionY("projY_LBarLBar_ME", binMinY, binMaxY);
+    // projY_LBarLBar_ME->GetYaxis()->SetRange(binMinY, binMaxY);
+    // projY_LBarLBar_ME->SetLineColor(kBlue+2);
+    // projY_LBarLBar_ME->SetLineWidth(3);
+    // projY_LBarLBar_ME->Draw();
+    // projY_LBarLBar_ME->SetTitle("Lambda Bar - Lambda Bar Signal (y axis)");
 
-    int MeanY_LBarLBar_ME = h2_LBarLBar_Signal_ME->GetYaxis()->FindBin(gaus2D_LBarLBar_ME->GetParameter(1));
-    TH1D *meanY_LBarLBar_ME = h2_LBarLBar_Signal_ME->ProjectionY("meanY_LBarLBar_ME", MeanY_LBarLBar_ME, MeanY_LBarLBar_ME);
-    meanY_LBarLBar_ME->SetLineColor(kViolet-2);
-    meanY_LBarLBar_ME->SetLineWidth(3);
-    meanY_LBarLBar_ME->Draw("same");
+    // int MeanY_LBarLBar_ME = h2_LBarLBar_Signal_ME->GetYaxis()->FindBin(gaus2D_LBarLBar_ME->GetParameter(1));
+    // TH1D *meanY_LBarLBar_ME = h2_LBarLBar_Signal_ME->ProjectionY("meanY_LBarLBar_ME", MeanY_LBarLBar_ME, MeanY_LBarLBar_ME);
+    // meanY_LBarLBar_ME->SetLineColor(kViolet-2);
+    // meanY_LBarLBar_ME->SetLineWidth(3);
+    // meanY_LBarLBar_ME->Draw("same");
 
-    TF12 *proj_gausY_LBarLBar_ME = new TF12("proj_gausY_LBarLBar_ME", gaus2D_LBarLBar_ME, gaus2D_LBarLBar_ME->GetParameter(1), "y");
-    proj_gausY_LBarLBar_ME->SetLineColor(kRed+1);
-    proj_gausY_LBarLBar_ME->SetLineWidth(3);
-    proj_gausY_LBarLBar_ME->Draw("same");
+    // TF12 *proj_gausY_LBarLBar_ME = new TF12("proj_gausY_LBarLBar_ME", gaus2D_LBarLBar_ME, gaus2D_LBarLBar_ME->GetParameter(1), "y");
+    // proj_gausY_LBarLBar_ME->SetLineColor(kRed+1);
+    // proj_gausY_LBarLBar_ME->SetLineWidth(3);
+    // proj_gausY_LBarLBar_ME->Draw("same");
 
-    std::cout << "Canvas 2 Complete" << std::endl;
+    // std::cout << "Canvas 2 Complete" << std::endl;
 
     // // 3 Sigma Cut and Polarization Calculations for Mixed Event Lambda - Lambda Pairs
     // double meanX_LL_ME_2 = gaus2D_LL_ME->GetParameter(1);
@@ -1227,7 +1325,8 @@ void ME_pp_analysis(){
 
     // // Canvas 9: Invariant Mass Distribution within ±3 sigma range of the gaussian fit
     // std::unique_ptr<TCanvas> c3(new TCanvas("c3", "Canvas 3", 1800, 900));
-    // c3->Divide(3, 1);
+    // // c3->Divide(3, 1);
+    // c3->Divide(1, 1);
 
     // // Lambda - Lambda Signal
     // TH2F *h2_invMass_ME_LL_Signal = new TH2F(*h2_invMass_ME_lambda_us_lambda_us);
@@ -1462,14 +1561,14 @@ void ME_pp_analysis(){
 
     c1->Update();
     c2->Update();
-    // c3->Update();
+    c3->Update();
     // c4->Update();
     // c5->Update();
     // c6->Update();
 
     c1->WaitPrimitive();
     c2->WaitPrimitive();
-    // c3->WaitPrimitive();
+    c3->WaitPrimitive();
     // c4->WaitPrimitive();
     // c5->WaitPrimitive();
     // c6->WaitPrimitive();
