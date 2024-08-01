@@ -18,17 +18,15 @@ double invariantMass(const TLorentzVector &p1, const TLorentzVector &p2) {
     return p.M();
 }
 
-void full_pp_analysis(){
+void full_gold_analysis(){
     // Create a TChain
     TChain *ntp_Lambda = new TChain("ntp_Lambda");
 
     // Add ROOT files to the TChain
-    ntp_Lambda->Add("output_1.root");
-    ntp_Lambda->Add("output_2.root");
-    ntp_Lambda->Add("output_3.root");
-    ntp_Lambda->Add("output_4.root");
-    ntp_Lambda->Add("output_5.root");
-    ntp_Lambda->Add("output_6.root");
+    ntp_Lambda->Add("gold_output_1.root");
+    ntp_Lambda->Add("gold_output_2.root");
+    ntp_Lambda->Add("gold_output_3.root");
+    ntp_Lambda->Add("gold_output_4.root");
 
     // Check if the TChain has been successfully created and files added
     if (ntp_Lambda->GetEntries() == 0) {
@@ -2535,38 +2533,52 @@ void full_pp_analysis(){
     // // Print completion message
     // std::cout << "Canvas 14 Complete" << std::endl;
 
-    c1->Update();
-    c2->Update();
-    c3->Update();
-    c4->Update();
-    c5->Update();
-    c6->Update();
-    c7->Update();
-    c8->Update();
-    c9->Update();
-    c10->Update();
-    c11->Update();
-    c12->Update();
-    c13->Update();
-    // c14->Update();
+    c1->SaveAs("gold canvas 1.png");
+    c2->SaveAs("gold canvas 2.png");
+    c3->SaveAs("gold canvas 3.png");
+    c4->SaveAs("gold canvas 4.png");
+    c5->SaveAs("gold canvas 5.png");
+    c6->SaveAs("gold canvas 6.png");
+    c7->SaveAs("gold canvas 7.png");
+    c8->SaveAs("gold canvas 8.png");
+    c9->SaveAs("gold canvas 9.png");
+    c10->SaveAs("gold canvas 10.png");
+    c11->SaveAs("gold canvas 11.png");
+    c12->SaveAs("gold canvas 12.png");
+    c13->SaveAs("gold canvas 13.png");
 
-    c1->WaitPrimitive();
-    c2->WaitPrimitive();
-    c3->WaitPrimitive();
-    c4->WaitPrimitive();
-    c5->WaitPrimitive();
-    c6->WaitPrimitive();
-    c7->WaitPrimitive();
-    c8->WaitPrimitive();
-    c9->WaitPrimitive();
-    c10->WaitPrimitive();
-    c11->WaitPrimitive();
-    c12->WaitPrimitive();
-    c13->WaitPrimitive();
-    // c14->WaitPrimitive();
+    // c1->Update();
+    // c2->Update();
+    // c3->Update();
+    // c4->Update();
+    // c5->Update();
+    // c6->Update();
+    // c7->Update();
+    // c8->Update();
+    // c9->Update();
+    // c10->Update();
+    // c11->Update();
+    // c12->Update();
+    // c13->Update();
+    // // c14->Update();
+
+    // c1->WaitPrimitive();
+    // c2->WaitPrimitive();
+    // c3->WaitPrimitive();
+    // c4->WaitPrimitive();
+    // c5->WaitPrimitive();
+    // c6->WaitPrimitive();
+    // c7->WaitPrimitive();
+    // c8->WaitPrimitive();
+    // c9->WaitPrimitive();
+    // c10->WaitPrimitive();
+    // c11->WaitPrimitive();
+    // c12->WaitPrimitive();
+    // c13->WaitPrimitive();
+    // // c14->WaitPrimitive();
 }
 
 int main() {
-    full_pp_analysis();
+    full_gold_analysis();
     return 0;
 }
