@@ -1006,7 +1006,7 @@ void full_gold_analysis(){
     h2_LL_Signal->SetTitle("2d Invariant Mass for Lambda - Lambda Pair (Signal)");
 
     TF2 *gaus2D_LL = new TF2("gaus2D_LL", "[0]*TMath::Gaus(x,[1],[2])*TMath::Gaus(y,[3],[4])", minX, maxX, minY, maxY);
-    gaus2D_LL->SetParameters(190.681, 1.11571, 0.001478, 1.11571, 0.001369);
+    gaus2D_LL->SetParameters(1000, 1.11571, 0.002, 1.11571, 0.002);
     h2_LL_Signal->Fit("gaus2D_LL", "R0");
 
     c1->cd(4);
@@ -1025,7 +1025,7 @@ void full_gold_analysis(){
     h2_LLBar_Signal->SetTitle("2d Invariant Mass for Lambda - Lambda Bar Pair (Signal)");
 
     TF2 *gaus2D_LLBar = new TF2("gaus2D_LLBar", "[0]*TMath::Gaus(x,[1],[2])*TMath::Gaus(y,[3],[4])", minX, maxX, minY, maxY);
-    gaus2D_LLBar->SetParameters(360.198, 1.11573, 0.00137157, 1.11574, 0.00139988);
+    gaus2D_LLBar->SetParameters(1500, 1.11573, 0.002, 1.11573, 0.002);
     h2_LLBar_Signal->Fit("gaus2D_LLBar", "R0");
 
     c1->cd(5);
@@ -1044,7 +1044,7 @@ void full_gold_analysis(){
     h2_LBarLBar_Signal->SetTitle("2d Invariant Mass for Lambda Bar - Lambda Bar Pair (Signal)");
 
     TF2 *gaus2D_LBarLBar = new TF2("gaus2D_LBarLBar", "[0]*TMath::Gaus(x,[1],[2])*TMath::Gaus(y,[3],[4])", minX, maxX, minY, maxY);
-    gaus2D_LBarLBar->SetParameters(146.732, 1.11578, 0.00143841, 1.11565, 0.00123124);
+    gaus2D_LBarLBar->SetParameters(800, 1.11578, 0.002, 1.11565, 0.002);
     h2_LBarLBar_Signal->Fit("gaus2D_LBarLBar", "R0");
 
     c1->cd(6);
@@ -1716,7 +1716,7 @@ void full_gold_analysis(){
     h2_LL_Signal_ME->SetTitle("Lambda - Lambda Pair Signal (ME)");
 
     TF2 *gaus2D_LL_ME = new TF2("gaus2D_LL_ME", "[0]*TMath::Gaus(x,[1],[2])*TMath::Gaus(y,[3],[4])", minX, maxX, minY, maxY);
-    gaus2D_LL_ME->SetParameters(122.077, 1.11557, 0.00198313, 1.11579, 0.00106464);
+    gaus2D_LL_ME->SetParameters(1000, 1.11571, 0.002, 1.11571, 0.002);
     h2_LL_Signal_ME->Fit("gaus2D_LL_ME", "R0");
 
     // Print the fit parameters
@@ -1749,7 +1749,7 @@ void full_gold_analysis(){
     h2_LLBar_Signal_ME->SetTitle("Lambda - Lambda Bar Pair Signal (ME)");
 
     TF2 *gaus2D_LLBar_ME = new TF2("gaus2D_LLBar_ME", "[0]*TMath::Gaus(x,[1],[2])*TMath::Gaus(y,[3],[4])", minX, maxX, minY, maxY);
-    gaus2D_LLBar_ME->SetParameters(159.815, 1.11568, 0.0011939, 1.11569, 0.00118137);
+    gaus2D_LLBar_ME->SetParameters(1500, 1.11573, 0.002, 1.11573, 0.002);
     h2_LLBar_Signal_ME->Fit("gaus2D_LLBar_ME", "R0");
 
     // Print the fit parameters
@@ -1782,7 +1782,7 @@ void full_gold_analysis(){
     h2_LBarLBar_Signal_ME->SetTitle("Lambda - Lambda Bar Pair Signal (ME)");
 
     TF2 *gaus2D_LBarLBar_ME = new TF2("gaus2D_LBarLBar_ME", "[0]*TMath::Gaus(x,[1],[2])*TMath::Gaus(y,[3],[4])", minX, maxX, minY, maxY);
-    gaus2D_LBarLBar_ME->SetParameters(137.144, 1.11572, 0.00162144, 1.11565, 0.00125809);
+    gaus2D_LBarLBar_ME->SetParameters(800, 1.11578, 0.002, 1.11565, 0.002);
     h2_LBarLBar_Signal_ME->Fit("gaus2D_LBarLBar_ME", "R0");
 
     // Print the fit parameters
@@ -2533,49 +2533,49 @@ void full_gold_analysis(){
     // // Print completion message
     // std::cout << "Canvas 14 Complete" << std::endl;
 
-    c1->SaveAs("gold canvas 1.png");
-    c2->SaveAs("gold canvas 2.png");
-    c3->SaveAs("gold canvas 3.png");
-    c4->SaveAs("gold canvas 4.png");
-    c5->SaveAs("gold canvas 5.png");
-    c6->SaveAs("gold canvas 6.png");
-    c7->SaveAs("gold canvas 7.png");
-    c8->SaveAs("gold canvas 8.png");
-    c9->SaveAs("gold canvas 9.png");
-    c10->SaveAs("gold canvas 10.png");
-    c11->SaveAs("gold canvas 11.png");
-    c12->SaveAs("gold canvas 12.png");
-    c13->SaveAs("gold canvas 13.png");
+    // c1->SaveAs("gold canvas 1.png");
+    // c2->SaveAs("gold canvas 2.png");
+    // c3->SaveAs("gold canvas 3.png");
+    // c4->SaveAs("gold canvas 4.png");
+    // c5->SaveAs("gold canvas 5.png");
+    // c6->SaveAs("gold canvas 6.png");
+    // c7->SaveAs("gold canvas 7.png");
+    // c8->SaveAs("gold canvas 8.png");
+    // c9->SaveAs("gold canvas 9.png");
+    // c10->SaveAs("gold canvas 10.png");
+    // c11->SaveAs("gold canvas 11.png");
+    // c12->SaveAs("gold canvas 12.png");
+    // c13->SaveAs("gold canvas 13.png");
 
-    // c1->Update();
-    // c2->Update();
-    // c3->Update();
-    // c4->Update();
-    // c5->Update();
-    // c6->Update();
-    // c7->Update();
-    // c8->Update();
-    // c9->Update();
-    // c10->Update();
-    // c11->Update();
-    // c12->Update();
-    // c13->Update();
-    // // c14->Update();
+    c1->Update();
+    c2->Update();
+    c3->Update();
+    c4->Update();
+    c5->Update();
+    c6->Update();
+    c7->Update();
+    c8->Update();
+    c9->Update();
+    c10->Update();
+    c11->Update();
+    c12->Update();
+    c13->Update();
+    // c14->Update();
 
-    // c1->WaitPrimitive();
-    // c2->WaitPrimitive();
-    // c3->WaitPrimitive();
-    // c4->WaitPrimitive();
-    // c5->WaitPrimitive();
-    // c6->WaitPrimitive();
-    // c7->WaitPrimitive();
-    // c8->WaitPrimitive();
-    // c9->WaitPrimitive();
-    // c10->WaitPrimitive();
-    // c11->WaitPrimitive();
-    // c12->WaitPrimitive();
-    // c13->WaitPrimitive();
-    // // c14->WaitPrimitive();
+    c1->WaitPrimitive();
+    c2->WaitPrimitive();
+    c3->WaitPrimitive();
+    c4->WaitPrimitive();
+    c5->WaitPrimitive();
+    c6->WaitPrimitive();
+    c7->WaitPrimitive();
+    c8->WaitPrimitive();
+    c9->WaitPrimitive();
+    c10->WaitPrimitive();
+    c11->WaitPrimitive();
+    c12->WaitPrimitive();
+    c13->WaitPrimitive();
+    // c14->WaitPrimitive();
 }
 
 int main() {
