@@ -1062,12 +1062,29 @@ void SE_gold_analysis(){
 
     std::cout << "Canvas 6 Complete" << std::endl;
 
+    // Canvas 7: US-US and US-LS Minv plots on same pad
+    std::unique_ptr<TCanvas> c7(new TCanvas("c7", "Canvas 7", 1800, 900));
+    c7->Divide(3, 1);
+
+    c7->cd(1);
+    h2_lambda_us_lambda_us->Draw("SURF2");
+    h2_lambda_us_lambda_ls->Draw("same");
+
+    c7->cd(2);
+    h2_lambda_us_lambda_bar_us->Draw("SURF2");
+    h2_lambda_us_lambda_bar_ls->Draw("same");
+
+    c7->cd(3);
+    h2_lambda_bar_us_lambda_bar_us->Draw("SURF2");
+    h2_lambda_bar_us_lambda_bar_ls->Draw("same");
+
     c1->Update();
     c2->Update();
     c3->Update();
     c4->Update();
     c5->Update();
     c6->Update();
+    c7->Update();
 
     c1->WaitPrimitive();
     c2->WaitPrimitive();
@@ -1075,6 +1092,7 @@ void SE_gold_analysis(){
     c4->WaitPrimitive();
     c5->WaitPrimitive();
     c6->WaitPrimitive();
+    c7->WaitPrimitive();
 }
 
 int main() {

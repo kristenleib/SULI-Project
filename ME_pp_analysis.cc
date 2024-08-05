@@ -635,7 +635,7 @@ void ME_pp_analysis(){
 
         // counts_successfull_ME_US_LS_LL.push_back(1.0 / successfull_ME_US_LS_LL);
 
-        if (successfull_ME_US_US_LL != 0) {
+        if (successfull_ME_US_LS_LL != 0) {
             counts_successfull_ME_US_LS_LL.push_back(1.0 / successfull_ME_US_LS_LL);
         } else {
             counts_successfull_ME_US_LS_LL.push_back(0.0);
@@ -811,7 +811,7 @@ void ME_pp_analysis(){
 
     for (size_t j = 0; j < same_event_lambda_bar_us_1.size(); ++j) {
 
-        float successfull_ME_US_US_LBarLbar = 0;
+        float successfull_ME_US_US_LBarLBar = 0;
 
         for (size_t k = 0; k < single_lambda_bar_us.size(); ++k) {
             if (anti_proton_id_lambda_bar_us[j] != anti_proton_id_lambda_bar_us[k] || anti_pion_id_lambda_bar_us[j] != anti_pion_id_lambda_bar_us[k]){
@@ -823,7 +823,7 @@ void ME_pp_analysis(){
                 if (fabs(same_event_lambda_bar_us_2[j].Eta() - single_lambda_bar_us[k].Eta()) > eta_restrict)
                     continue;
 
-                successfull_ME_US_US_LBarLbar++;
+                successfull_ME_US_US_LBarLBar++;
             }
         }
 
@@ -874,7 +874,13 @@ void ME_pp_analysis(){
             }
         }
 
-        counts_successfull_ME_US_LS_LBarLBar.push_back(1.0 / successfull_ME_US_LS_LBarLBar);
+        // counts_successfull_ME_US_LS_LBarLBar.push_back(1.0 / successfull_ME_US_LS_LBarLBar);
+
+        if (successfull_ME_US_LS_LBarLBar != 0) {
+            counts_successfull_ME_US_LS_LBarLBar.push_back(1.0 / successfull_ME_US_LS_LBarLBar);
+        } else {
+            counts_successfull_ME_US_LS_LBarLBar.push_back(0.0);
+        }
     }
 
     int iter_6 = 0;
@@ -1193,7 +1199,6 @@ void ME_pp_analysis(){
 
         // cos_theta_star_values.push_back(cos_theta_star);
         h_ME_cos_theta_star->Fill(ME_cos_theta_star, weight_1);
-        std::cout << "h_ME_cos_theta_star complete" << std::endl;
     }
 
     for (size_t i = 0; i < fourmoment_ME_lambda_us_3.size(); ++i){
