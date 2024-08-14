@@ -405,7 +405,7 @@ void ME_gold_analysis(){
             }
 
             // Pull out the single US Lambdas and US Lambda Bars
-            int vector_size = 1e5;
+            int vector_size = 1e4;
 
             if (lambda_us.size() == 1 && lambda_bar_us.size() == 0 && single_lambda_us.size() < vector_size){
                 h1_single_lambda_us->Fill(lambda_us[0].M());

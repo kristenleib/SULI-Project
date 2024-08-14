@@ -217,6 +217,14 @@ void ME_pp_analysis(){
     vector<float> counts_successfull_ME_US_US_LBarLBar;
     vector<float> counts_successfull_ME_US_LS_LBarLBar;
 
+    vector<float> needsbettername;
+    vector<float> needsbettername2;
+    vector<float> needsbettername3;
+    vector<float> needsbettername4;
+    vector<float> needsbettername5;
+    vector<float> needsbettername6;
+    vector<float> needsbettername7;
+
     // Invariant Mass Histograms before Cuts
     TH2F *h2_lambda_us_lambda_us = new TH2F("h2_lambda_us_lambda_us", "Unlike Sign Lambda - Unlike Sign Lambda (Includes Background)", 500, 1.0, 1.4, 500, 1.0, 1.4);
     TH2F *h2_lambda_us_lambda_ls = new TH2F("h2_lambda_us_lambda_ls", "Unlike Sign Lambda - Like Sign Lambda (Background)", 500, 1.0, 1.4, 500, 1.0, 1.4);
@@ -407,7 +415,7 @@ void ME_pp_analysis(){
             }
 
             // Pull out the single US Lambdas and US Lambda Bars
-            int vector_size = 1e4;
+            int vector_size = 1e5;
 
             if (lambda_us.size() == 1 && lambda_bar_us.size() == 0 && single_lambda_us.size() < vector_size){
                 h1_single_lambda_us->Fill(lambda_us[0].M());
@@ -568,10 +576,6 @@ void ME_pp_analysis(){
         for (size_t k = 0; k < single_lambda_us.size(); ++k) {
             if (proton_id_lambda_us[j] != proton_id_lambda_us[k] || pion_id_lambda_us[j] != pion_id_lambda_us[k]) {
 
-                // further pre-selection cuts (?)
-                // double invariantMass_us_1 = same_event_lambda_us_1[j].M();
-                // double invariantMass_us_2 = single_lambda_us[k].M();
-
                 if (fabs(same_event_lambda_us_2[j].Pt() - single_lambda_us[k].Pt()) > pt_restrict)
                     continue;
                 if (fabs(same_event_lambda_us_2[j].Phi() - single_lambda_us[k].Phi()) > phi_restrict)
@@ -583,7 +587,7 @@ void ME_pp_analysis(){
             }
         }
 
-        // counts_successfull_ME_US_US_LL.push_back(1.0/successfull_ME_US_US_LL);
+        // counts_successfull_ME_US_US_LL.push_back(20.0);
         if (successfull_ME_US_US_LL != 0) {
             counts_successfull_ME_US_US_LL.push_back(1.0 / successfull_ME_US_US_LL);
         } else {
@@ -608,6 +612,8 @@ void ME_pp_analysis(){
             fourmoment_ME_lambda_us_2.push_back(single_lambda_us[k]);
             fourmoment_ME_proton_us_1.push_back(same_event_proton_us_1[j]);
             fourmoment_ME_proton_us_2.push_back(single_proton_us[k]);
+
+            needsbettername.push_back(counts_successfull_ME_US_US_LL[j]);
         }
     }
 
@@ -633,7 +639,7 @@ void ME_pp_analysis(){
             }
         }
 
-        // counts_successfull_ME_US_LS_LL.push_back(1.0 / successfull_ME_US_LS_LL);
+        // counts_successfull_ME_US_LS_LL.push_back(20.0);
 
         if (successfull_ME_US_LS_LL != 0) {
             counts_successfull_ME_US_LS_LL.push_back(1.0 / successfull_ME_US_LS_LL);
@@ -663,6 +669,8 @@ void ME_pp_analysis(){
                 fourmoment_ME_lambda_ls_3.push_back(single_lambda_ls[k]);
                 fourmoment_ME_proton_us_3.push_back(same_event_proton_us_3[j]);
                 fourmoment_ME_proton_ls_3.push_back(single_proton_ls[k]);
+
+                needsbettername2.push_back(counts_successfull_ME_US_LS_LL[j]);
         }
     }
 
@@ -710,6 +718,8 @@ void ME_pp_analysis(){
             fourmoment_ME_lambda_bar_us_4.push_back(single_lambda_bar_us[k]);
             fourmoment_ME_proton_us_4.push_back(same_event_proton_us_4[j]);
             fourmoment_ME_anti_proton_us_4.push_back(single_anti_proton_us[k]);
+
+            needsbettername3.push_back(counts_successfull_ME_US_US_LLBar[j]);
         }
     }
 
@@ -757,6 +767,8 @@ void ME_pp_analysis(){
             fourmoment_ME_lambda_bar_ls_5.push_back(single_lambda_bar_ls[k]);
             fourmoment_ME_proton_us_5.push_back(same_event_proton_us_5[j]);
             fourmoment_ME_anti_proton_ls_5.push_back(single_anti_proton_ls[k]);
+
+            needsbettername4.push_back(counts_successfull_ME_US_LS_LLBar[j]);
         }
     }
 
@@ -804,6 +816,8 @@ void ME_pp_analysis(){
             fourmoment_ME_lambda_bar_us_5.push_back(single_lambda_bar_us[k]);
             fourmoment_ME_proton_ls_5.push_back(same_event_proton_ls_5[j]);
             fourmoment_ME_anti_proton_us_5.push_back(single_proton_us[j]);
+
+            needsbettername5.push_back(counts_successfull_ME_LS_US_LLBar[j]);
         }
     }
 
@@ -851,6 +865,8 @@ void ME_pp_analysis(){
             fourmoment_ME_lambda_bar_us_2.push_back(single_lambda_bar_us[k]);
             fourmoment_ME_anti_proton_us_1.push_back(same_event_anti_proton_us_1[j]);
             fourmoment_ME_anti_proton_us_2.push_back(single_anti_proton_us[k]);
+
+            needsbettername6.push_back(counts_successfull_ME_US_US_LBarLBar[j]);
         }
     }
 
@@ -906,6 +922,8 @@ void ME_pp_analysis(){
             fourmoment_ME_lambda_bar_ls_6.push_back(single_lambda_bar_ls[k]);
             fourmoment_ME_anti_proton_us_6.push_back(same_event_anti_proton_us_6[j]);
             fourmoment_ME_anti_proton_ls_6.push_back(single_anti_proton_ls[k]);
+
+            needsbettername7.push_back(counts_successfull_ME_US_LS_LBarLBar[j]);
         }
     }
 
@@ -1167,7 +1185,8 @@ void ME_pp_analysis(){
     for (size_t i = 0; i < fourmoment_ME_lambda_us_1.size(); ++i) {
         double invariantMass_ME_lambda_us_1 = fourmoment_ME_lambda_us_1[i].M();
         double invariantMass_ME_lambda_us_2 = fourmoment_ME_lambda_us_2[i].M();
-        double weight_1 = counts_successfull_ME_US_US_LL[i];
+        double weight_1 = needsbettername[i];
+        // double weight_1 = 20.0;
 
         if (invariantMass_ME_lambda_us_1 >= minX_range_LL_ME_2 && invariantMass_ME_lambda_us_1 <= maxX_range_LL_ME_2 &&
             invariantMass_ME_lambda_us_2 >= minX_range_LL_ME_2 && invariantMass_ME_lambda_us_2 <= maxX_range_LL_ME_2) {
@@ -1179,7 +1198,6 @@ void ME_pp_analysis(){
                 double delta_R = sqrt(delta_eta * delta_eta + delta_phi * delta_phi);
 
                 h_delta_R_ME_US_US_ll->Fill(delta_R, weight_1);
-
                 h_delta_phi_ME_US_US_ll->Fill(delta_phi, weight_1);
 
                 double delta_R_Threshold = 0.93;
@@ -1204,7 +1222,8 @@ void ME_pp_analysis(){
     for (size_t i = 0; i < fourmoment_ME_lambda_us_3.size(); ++i){
         double invariantMass_ME_lambda_us_3 = fourmoment_ME_lambda_us_3[i].M();
         double invariantMass_ME_lambda_ls_3 = fourmoment_ME_lambda_ls_3[i].M();
-        double weight_2 = counts_successfull_ME_US_LS_LL[i];
+        double weight_2 = needsbettername2[i];
+        // double weight_2 = 20.0;
 
         if (invariantMass_ME_lambda_us_3 >= minX_range_LL_ME_2 && invariantMass_ME_lambda_us_3 <= maxX_range_LL_ME_2 &&
             invariantMass_ME_lambda_ls_3 >= minX_range_LL_ME_2 && invariantMass_ME_lambda_ls_3 <= maxX_range_LL_ME_2) {
@@ -1251,6 +1270,7 @@ void ME_pp_analysis(){
     for (size_t i = 0; i < fourmoment_ME_lambda_us_4.size(); ++i) {
         double invariantMass_ME_lambda_us_4 = fourmoment_ME_lambda_us_4[i].M();
         double invariantMass_ME_lambda_bar_us_4 = fourmoment_ME_lambda_bar_us_4[i].M();
+        double weight_3 = needsbettername3[i];
 
         if (invariantMass_ME_lambda_us_4 >= minX_range_LLBar_ME_2 && invariantMass_ME_lambda_us_4 <= maxX_range_LLBar_ME_2 &&
             invariantMass_ME_lambda_bar_us_4 >= minY_range_LLBar_ME_2 && invariantMass_ME_lambda_bar_us_4 <= maxY_range_LLBar_ME_2) {
@@ -1262,8 +1282,8 @@ void ME_pp_analysis(){
                 
                 double delta_R = sqrt(delta_eta * delta_eta + delta_phi * delta_phi);
 
-                h_delta_R_ME_US_US_llbar->Fill(delta_R);
-                h_delta_phi_ME_US_US_llbar->Fill(delta_phi);
+                h_delta_R_ME_US_US_llbar->Fill(delta_R, weight_3);
+                h_delta_phi_ME_US_US_llbar->Fill(delta_phi, weight_3);
 
                 double delta_R_Threshold = 0.93;
                 if (delta_R > delta_R_Threshold)
@@ -1280,12 +1300,13 @@ void ME_pp_analysis(){
         double ME_cos_theta_star3 = cos(ME_theta_star3);
 
         // cos_theta_star3_values.push_back(cos_theta_star3);
-        h_ME_cos_theta_star3->Fill(ME_cos_theta_star3);
+        h_ME_cos_theta_star3->Fill(ME_cos_theta_star3, weight_3);
     }
 
     for (size_t i = 0; i < fourmoment_ME_lambda_us_5.size(); ++i) {
         double invariantMass_ME_lambda_us_5 = fourmoment_ME_lambda_us_5[i].M();
         double invariantMass_ME_lambda_bar_ls_5 = fourmoment_ME_lambda_bar_ls_5[i].M();
+        double weight_4 = needsbettername4[i];
 
         if (invariantMass_ME_lambda_us_5 >= minX_range_LLBar_ME_2 && invariantMass_ME_lambda_us_5 <= maxX_range_LLBar_ME_2 &&
             invariantMass_ME_lambda_bar_ls_5 >= minY_range_LLBar_ME_2 && invariantMass_ME_lambda_bar_ls_5 <= maxY_range_LLBar_ME_2) {
@@ -1297,14 +1318,14 @@ void ME_pp_analysis(){
                 
                 double delta_R = sqrt(delta_eta * delta_eta + delta_phi * delta_phi);
 
-                h_delta_R_ME_US_LS_llbar->Fill(delta_R);
-                h_delta_phi_ME_US_LS_llbar->Fill(delta_phi);
+                h_delta_R_ME_US_LS_llbar->Fill(delta_R, weight_4);
+                h_delta_phi_ME_US_LS_llbar->Fill(delta_phi, weight_4);
 
                 double delta_R_Threshold = 0.93;
                 if (delta_R > delta_R_Threshold)
                     continue;
 
-            h2_invMass_ME_lambda_us_lambda_bar_ls->Fill(invariantMass_ME_lambda_us_5, invariantMass_ME_lambda_bar_ls_5);
+            h2_invMass_ME_lambda_us_lambda_bar_ls->Fill(invariantMass_ME_lambda_us_5, invariantMass_ME_lambda_bar_ls_5, weight_4);
         } else {
             continue;
         }
@@ -1315,12 +1336,13 @@ void ME_pp_analysis(){
         double ME_cos_theta_star4 = cos(ME_theta_star4);
 
         // cos_theta_star4_values.push_back(cos_theta_star4);
-        h_ME_cos_theta_star4->Fill(ME_cos_theta_star4);
+        h_ME_cos_theta_star4->Fill(ME_cos_theta_star4, weight_4);
     }
 
     for (size_t i = 0; i < fourmoment_ME_lambda_ls_5.size(); ++i) {
         double invariantMass_ME_lambda_ls_5 = fourmoment_ME_lambda_ls_5[i].M();
         double invariantMass_ME_lambda_bar_us_5 = fourmoment_ME_lambda_bar_us_5[i].M();
+        double weight_5 = needsbettername5[i];
 
         if (invariantMass_ME_lambda_ls_5 >= minX_range_LLBar_ME_2 && invariantMass_ME_lambda_ls_5 <= maxX_range_LLBar_ME_2 &&
             invariantMass_ME_lambda_bar_us_5 >= minY_range_LLBar_ME_2 && invariantMass_ME_lambda_bar_us_5 <= maxY_range_LLBar_ME_2){
@@ -1332,14 +1354,14 @@ void ME_pp_analysis(){
                 
                 double delta_R = sqrt(delta_eta * delta_eta + delta_phi * delta_phi);
 
-                h_delta_R_ME_US_LS_llbar->Fill(delta_R);
-                h_delta_phi_ME_US_LS_llbar->Fill(delta_phi);
+                h_delta_R_ME_US_LS_llbar->Fill(delta_R, weight_5);
+                h_delta_phi_ME_US_LS_llbar->Fill(delta_phi, weight_5);
 
                 double delta_R_Threshold = 0.93;
                 if (delta_R > delta_R_Threshold)
                     continue;
 
-            h2_invMass_ME_lambda_us_lambda_bar_ls->Fill(invariantMass_ME_lambda_ls_5, invariantMass_ME_lambda_bar_us_5);
+            h2_invMass_ME_lambda_us_lambda_bar_ls->Fill(invariantMass_ME_lambda_ls_5, invariantMass_ME_lambda_bar_us_5, weight_5);
         } else {
             continue;
         }
@@ -1350,7 +1372,7 @@ void ME_pp_analysis(){
         double ME_cos_theta_star4 = cos(ME_theta_star4);
 
         // cos_theta_star4_values.push_back(cos_theta_star4);
-        h_ME_cos_theta_star4->Fill(ME_cos_theta_star4);
+        h_ME_cos_theta_star4->Fill(ME_cos_theta_star4, weight_5);
     }
 
     // 3 Sigma Cut for Mixed Event Lambda Bar - Lambda Bar Pairs
@@ -1367,6 +1389,7 @@ void ME_pp_analysis(){
     for (size_t i = 0; i < fourmoment_ME_lambda_bar_us_1.size(); ++i) {
         double invariantMass_ME_lambda_bar_us_1 = fourmoment_ME_lambda_bar_us_1[i].M();
         double invariantMass_ME_lambda_bar_us_2 = fourmoment_ME_lambda_bar_us_2[i].M();
+        double weight_6 = needsbettername6[i];
 
         if (invariantMass_ME_lambda_bar_us_1 >= minX_range_LBarLBar_ME_2 && invariantMass_ME_lambda_bar_us_1 <= maxX_range_LBarLBar_ME_2 &&
             invariantMass_ME_lambda_bar_us_2 >= minY_range_LBarLBar_ME_2 && invariantMass_ME_lambda_bar_us_2 <= maxY_range_LBarLBar_ME_2) {
@@ -1378,14 +1401,14 @@ void ME_pp_analysis(){
                 
                 double delta_R = sqrt(delta_eta * delta_eta + delta_phi * delta_phi);
 
-                h_delta_R_ME_US_US_lbarlbar->Fill(delta_R);
-                h_delta_phi_ME_US_US_lbarlbar->Fill(delta_phi);
+                h_delta_R_ME_US_US_lbarlbar->Fill(delta_R, weight_6);
+                h_delta_phi_ME_US_US_lbarlbar->Fill(delta_phi, weight_6);
 
                 double delta_R_Threshold = 0.93;
                 if (delta_R > delta_R_Threshold)
                     continue;
 
-            h2_invMass_ME_lambda_bar_us_lambda_bar_us->Fill(invariantMass_ME_lambda_bar_us_1, invariantMass_ME_lambda_bar_us_2);
+            h2_invMass_ME_lambda_bar_us_lambda_bar_us->Fill(invariantMass_ME_lambda_bar_us_1, invariantMass_ME_lambda_bar_us_2, weight_6);
         } else {
             continue;
         }
@@ -1396,12 +1419,13 @@ void ME_pp_analysis(){
         double ME_cos_theta_star5 = cos(ME_theta_star5);
 
         // cos_theta_star5_values.push_back(cos_theta_star5);
-        h_ME_cos_theta_star5->Fill(ME_cos_theta_star5);
+        h_ME_cos_theta_star5->Fill(ME_cos_theta_star5, weight_6);
     }
 
     for (size_t i = 0; i < fourmoment_ME_lambda_bar_us_6.size(); ++i) {
         double invariantMass_ME_lambda_bar_us_6 = fourmoment_ME_lambda_bar_us_6[i].M();
         double invariantMass_ME_lambda_bar_ls_6 = fourmoment_ME_lambda_bar_ls_6[i].M();
+        double weight_7 = needsbettername7[i];
 
         if (invariantMass_ME_lambda_bar_us_6 >= minX_range_LBarLBar_ME_2 && invariantMass_ME_lambda_bar_us_6 <= maxX_range_LBarLBar_ME_2 &&
             invariantMass_ME_lambda_bar_ls_6 >= minY_range_LBarLBar_ME_2 && invariantMass_ME_lambda_bar_ls_6 <= maxY_range_LBarLBar_ME_2) {
@@ -1413,14 +1437,14 @@ void ME_pp_analysis(){
                 
                 double delta_R = sqrt(delta_eta * delta_eta + delta_phi * delta_phi);
 
-                h_delta_R_ME_US_LS_lbarlbar->Fill(delta_R);
-                h_delta_phi_ME_US_LS_lbarlbar->Fill(delta_phi);
+                h_delta_R_ME_US_LS_lbarlbar->Fill(delta_R, weight_7);
+                h_delta_phi_ME_US_LS_lbarlbar->Fill(delta_phi, weight_7);
 
                 double delta_R_Threshold = 0.93;
                 if (delta_R > delta_R_Threshold)
                     continue;
 
-            h2_invMass_ME_lambda_bar_us_lambda_bar_ls->Fill(invariantMass_ME_lambda_bar_us_6, invariantMass_ME_lambda_bar_ls_6);
+            h2_invMass_ME_lambda_bar_us_lambda_bar_ls->Fill(invariantMass_ME_lambda_bar_us_6, invariantMass_ME_lambda_bar_ls_6, weight_7);
         } else {
             continue;
         }
@@ -1431,7 +1455,7 @@ void ME_pp_analysis(){
         double ME_cos_theta_star6 = cos(ME_theta_star6);
 
         // cos_theta_star6_values.push_back(cos_theta_star6);
-        h_ME_cos_theta_star6->Fill(ME_cos_theta_star6);
+        h_ME_cos_theta_star6->Fill(ME_cos_theta_star6, weight_7);
     }
 
     // Canvas 9: Invariant Mass Distribution within ±3 sigma range of the gaussian fit
